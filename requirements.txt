@@ -1,0 +1,6 @@
+click
+docopt
+isort
+pip
+pipenv
+ptpython
