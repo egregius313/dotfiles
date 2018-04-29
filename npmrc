@@ -1,0 +1,8 @@
+# Edward Minnix
+# ~/.npmrc
+# updated: 04/29/2018
+
+prefix = ${HOME}/.local
+
+init-author-name = "Edward Minnix"
+init-license = "MIT"
