@@ -4,3 +4,4 @@ isort
 pip
 pipenv
 ptpython
+magic_wormhole
