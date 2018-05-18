@@ -46,12 +46,18 @@
 
 (if (daemonp)
 	(add-hook 'after-make-frame-functions
-			  (lambda (f))
-			  )
-	)
+			  (lambda (f)
+				(with-selected-frame f
+				  (when (window-system f)
+					(powerline-default-theme)
+					(load-theme 'material)))))
+  (progn
+	(powerline-default-theme)
+	(load-theme 'material)))
 
 
 (progn
   (show-paren-mode 1)
   (setq show-paren-delay 0))
   
+

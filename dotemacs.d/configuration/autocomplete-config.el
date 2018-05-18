@@ -27,7 +27,9 @@
   :diminish yas-minor-mode
 
   :config
-  (require 'company)
+  (progn
+	(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+	(require 'company))
   
   :bind
   (:map
@@ -40,5 +42,3 @@
 
 (use-package yasnippet-snippets
   :ensure t)
-
-

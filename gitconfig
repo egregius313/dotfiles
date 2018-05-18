@@ -1,0 +1,14 @@
+# Edward Minnix
+# ~/.gitconfig
+# updated 2018/05/15
+####################
+
+[user]
+	name = Edward Minnix
+	# make git prompt for email before allowing commits, this forces
+	# me to specify my email on a per-repo basis instead of globally
+	useConfigOnly = true
+
+[core]
+	editor = emacs
+	excludesfile = ~/.gitignore

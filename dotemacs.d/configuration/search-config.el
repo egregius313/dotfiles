@@ -9,9 +9,13 @@
   :after (flx)
 
   :config
-  ;;; (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  (progn
+	(defun my/strict-completion ()
+	  (setq-local ivy-re-builders-alist '((t . ivy--regex-plus))))
+	(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
-  )
+  :hook
+  ((package-menu-mode . my/strict-completion)))
 
 
 (use-package counsel
@@ -41,5 +45,12 @@
    ;; ("C-S-o" . counsel-rhythm)
    :map
    minibuffer-local-map
-   ("C-r" . counsel-minibuffer-history)))
+   ("C-r" . counsel-minibuffer-history)
 
+   :map
+   swiper-map
+   
+   ))
+
+
+(ace-window)
