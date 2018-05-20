@@ -42,3 +42,6 @@
 
 (use-package yasnippet-snippets
   :ensure t)
+
+
+(yas-reload-all)

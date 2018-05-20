@@ -48,9 +48,4 @@
    ("C-r" . counsel-minibuffer-history)
 
    :map
-   swiper-map
-   
-   ))
-
-
-(ace-window)
+   swiper-map))

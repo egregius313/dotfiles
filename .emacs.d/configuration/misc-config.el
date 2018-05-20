@@ -7,7 +7,10 @@
 
 
 (use-package treemacs
-  :ensure t)
+  :ensure t
+
+  :bind
+  ("C-c t" . treemacs-select-window))
 
 
 (use-package super-save

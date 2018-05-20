@@ -18,7 +18,7 @@
 	 ("melpa" . "http://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-	(company-web helm-swoop markdown-mode aggressive-indent xah-css-mode web-mode json-mode emmet-mode use-package-chords counsel flx ein py-autopep8 elpy utop flycheck-ocaml merlin tuareg super-save company which-key treemacs hlinum powerline material-theme diminish magit electric-case hs-minor-mode paredit rainbow-delimiters yasnippet-snippets yasnippet use-package)))
+	(company-web markdown-mode aggressive-indent xah-css-mode web-mode json-mode emmet-mode use-package-chords counsel flx ein py-autopep8 elpy utop flycheck-ocaml merlin tuareg super-save company which-key treemacs hlinum powerline material-theme diminish magit electric-case hs-minor-mode paredit rainbow-delimiters yasnippet-snippets yasnippet use-package)))
  '(vc-follow-symlinks nil))
 
 (custom-set-faces
@@ -63,3 +63,9 @@
 (load-file "~/.emacs.d/configuration/python-config.el")
 (load-file "~/.emacs.d/configuration/web.el")
 (load-file "~/.emacs.d/configuration/markdown.el")
+
+
+(setq key-chord-two-keys-delay 0.1)
+
+(key-chord-define-global "xs" (key-binding (kbd "C-x C-s")))
+
