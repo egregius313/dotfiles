@@ -69,7 +69,11 @@
   :ensure t
 
   :config
-  (setq key-chord-two-keys-delay 0.1))
+  (setq key-chord-two-keys-delay 0.2))
 
 
+(key-chord-define-global "xb" (key-binding (kbd "C-x b")))
+(key-chord-define-global "xc" (key-binding (kbd "C-x C-c")))
+(key-chord-define-global "xf" (key-binding (kbd "C-x C-f")))
+(key-chord-define-global "xk" (key-binding (kbd "C-x k")))
 (key-chord-define-global "xs" (key-binding (kbd "C-x C-s")))
