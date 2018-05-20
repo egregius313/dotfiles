@@ -65,7 +65,11 @@
 (load-file "~/.emacs.d/configuration/markdown.el")
 
 
-(setq key-chord-two-keys-delay 0.1)
+(use-package key-chord
+  :ensure t
+
+  :config
+  (setq key-chord-two-keys-delay 0.1))
+
 
 (key-chord-define-global "xs" (key-binding (kbd "C-x C-s")))
-
