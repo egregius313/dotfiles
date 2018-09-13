@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pgpersec
+# key: pgpersec
+# --
+#+LATEX_HEADER: \let\oldsection\section
+#+LATEX_HEADER: \renewcommand\section{\pagebreak\oldsection}

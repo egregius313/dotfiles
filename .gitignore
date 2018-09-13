@@ -1,3 +1,6 @@
+.ihsec/default/.cache
+.ihsec/default/.python-environments
 .ihsec/default/elpa
+.ihsec/default/url/cookies
 .ihsec/uncledave
 .ihsec/spacemacs

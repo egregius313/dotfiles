@@ -1,0 +1,8 @@
+# -*- mode: snippet -*=
+# name: js
+# key: js
+# --
+[*.js]
+indent_style = space
+indent_size = ${2:2}
+

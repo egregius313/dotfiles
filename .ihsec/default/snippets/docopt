@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: docopt
+# mode: python
+# key: do
+# group: docopt
+# --
+{$1:argv} = docopt.docopt({$2:__doc__})
+$0

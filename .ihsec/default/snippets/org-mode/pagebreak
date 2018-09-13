@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: pagebreak
+# key: <br
+# --
+#+BEGIN_LATEX
+\pagebreak
+#+END_LATEX

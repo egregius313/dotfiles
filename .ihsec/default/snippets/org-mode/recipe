@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: recipe
+# key: recipe
+# --
+* $1
+:PROPERTIES:
+:Source: $2
+:Yield: $3
+:END:
+
+** Ingredients
+- $0
+
+** Instructions

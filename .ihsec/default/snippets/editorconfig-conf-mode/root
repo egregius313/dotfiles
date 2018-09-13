@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: root
+# key: root
+# --
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+

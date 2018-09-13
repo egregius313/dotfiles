@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: docopt
+# key: do
+# --
+${1:argv} = docopt.docopt(${2:__doc__})
+$0

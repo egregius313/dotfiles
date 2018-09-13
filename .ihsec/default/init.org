@@ -1,0 +1,140 @@
+#+TITLE: [[https://github.com/egregius313/dotfiles][egregius313]] Emacs Configuration
+#+AUTHOR: Edward Minnix <egregius313@gmail.com>
+
+* Package configuration
+** Package archives
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+(package-initialize)
+(custom-set-variables
+ '(package-archives
+   (quote
+	(("gnu" . "http://elpa.gnu.org/packages/")
+	 ("melpa-stable" . "http://stable.melpa.org/packages/")
+	 ("melpa" . "http://melpa.org/packages/")))))  
+(package-refresh-contents)
+#+END_SRC
+** use-package
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+
+(use-package use-package-chords
+  :ensure t
+
+  :config
+  (key-chord-mode 1))
+#+END_SRC
+** diminish
+The diminish package helps remove extra minor modes from the modeline. Also 
+used by use-package for the =:diminish= keyword to work.
+#+BEGIN_SRC emacs-lisp
+(use-package diminish
+  :ensure t)
+#+END_SRC
+* Display
+* Dashboard
+Replace the default Emacs start up screen with a dashboard.
+#+BEGIN_SRC emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  ;; (setq dashboard-startup-banner "~/.emacs.d/img/lake.jpg")
+  (setq dashboard-startup-banner
+		;; "~/.ihsec/uncledave/img/dashLogo.png"
+		;; "~/.emacs.d/img/lake.png"
+		"~/.emacs.d/img/gods_lament.png"
+		)
+  (setq dashboard-items '((recents . 5)
+						  (projects . 5)))
+  (setq dashboard-banner-logo-title ""))
+#+END_SRC
+* Org mode Configuration
+** =<el= short cut
+Just like you can use =<s= for source, allow the use of =<el= for 
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :ensure t
+
+  :hook
+  ((org-mode . org-indent-mode))
+
+  :config
+  (setq org-ellipsis " ")
+  (add-to-list 'org-structure-template-alist
+			   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")))
+#+END_SRC
+** org-bullets
+Add pretty bullets to make the visual display of an org file more appealing.
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :ensure t
+
+  :hook
+  (org-mode . org-bullets-mode))
+#+END_SRC
+* File management, projects, and version control
+** editorconfig
+Editorconfig is a configuration format for controlling the text attributes for
+text files. It is good to use with version control, especially when 
+contributors develop on different platforms.
+
+#+BEGIN_SRC emacs-lisp
+(use-package editorconfig
+  :ensure t
+
+  :diminish editorconfig-mode
+  
+  :config
+  (editorconfig-mode 1))
+#+END_SRC
+See the [[https://editorconfig.org][editorconfig]] website for more details on the file format.
+** magit
+Magit is the git porcelain for Emacs. It is great for working with git 
+projects.
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t)
+#+END_SRC
+** neotree
+The neotree package is based on the nerdtree Vim package. It is useful for 
+managing files
+#+BEGIN_SRC emacs-lisp
+(use-package neotree
+  :ensure t
+
+  :config
+  (neotree-hidden-file-toggle)
+  
+  :bind
+  (("s-t" . neotree)
+   :map
+   neotree-mode-map
+   ("h" . 'neotree-hidden-file-toggle)
+   ("m" . neotree-rename-node)))
+#+END_SRC
+** projectile
+Useful tool for managing projects. Integrates with other tooling
+* Docker
+You can use Emacs to control and monitor
+** Dockerfile and compose files
+#+BEGIN_SRC emacs-lisp
+(use-package docker-compose-mode
+  :ensure t)
+
+(use-package dockerfile-mode
+  :ensure t)
+#+END_SRC
+** Docker manager
+#+BEGIN_SRC emacs-lisp
+(use-package docker
+  :ensure t)
+#+END_SRC
+** tramp support
+#+BEGIN_SRC emacs-lisp
+(use-package docker-tramp
+  :ensure t)
+#+END_SRC

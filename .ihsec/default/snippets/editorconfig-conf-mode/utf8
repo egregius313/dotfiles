@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: utf-8
+# key: utf8
+# --
+[${1:*}]
+charset = utf-8
+

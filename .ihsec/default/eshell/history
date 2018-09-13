@@ -1,0 +1,128 @@
+ls /etc
+ls /etc/pacman.conf
+ls /etc/pacman.d
+ls /etc/pacman.d/mirrorlist
+open /etc/pacman.d/mirrorlist
+/etc/pacman.d/mirrorlist
+ls
+sudo pacman -Ss qutebrowser
+sudo pacman -S qutebrowser
+sudo pacman -Syyu qutebrowser
+ls -l /usr/bin/py{rcc5,uic5,lupdate5}
+ls -l /usr/bin/py{rcc5,uic5}
+ls -l /usr/bin/pyrcc5
+ls -l /usr/bin/pyuic5 
+pyrcc5 
+ls -l /usr/bin/pyrcc5 /usr/bin/pyuic5 /usr/bin/pylupdate5
+rm -rf /usr/bin/pyrcc5 /usr/bin/pyuic5 /usr/bin/pylupdate5
+sudo rm -rf /usr/bin/pyrcc5 /usr/bin/pyuic5 /usr/bin/pylupdate5
+sudo pacman -Syyu qutebrowser
+clear
+ls
+clearls
+clear
+ls
+clear
+which ptpython
+ptpython
+ihsec --help
+ihsec help
+ihsec list
+cd ..
+ls
+cd spacemacs/
+ls
+git remote --help
+clear
+git remote get-url origin
+sudo fdisk -l
+ls
+cd
+ls
+cd code/elixir/
+ls
+mix new --help
+mix new
+man mix
+man mix-new
+mix new -h
+mix new
+mix new changelogparser
+cd changelogparser/
+mix test
+vim
+(tetris)
+(quit)
+(exit)
+exit
+ls
+(alchemist-iex-run)
+sudo pacman -Ss elixir
+ipfs --help
+sudo pacman -Ss ipfs
+sudo pacman -S go-ipfs
+ipfs --help
+ipfs daemon -h
+ipfs dht -h
+ipfs daemon
+cd ~
+ipfs init
+ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
+cd -
+ipfs -h
+ipfs daemon
+pgrep ipfs
+ps aux | grep ipfs
+which readelf
+man readelf
+man objdump
+(current-buffer)
+which ipfs
+suspend
+logout
+cd ..
+cd ..
+gem install
+gem build
+gem
+gem install -h
+gem install -g
+jekyll
+gem run -h
+gem -h
+gem install jekyll
+jekyll
+/home/egregius313/.gem/ruby/2.5.0/bin/jekyll 
+ls
+ls
+jekyll
+ls -a
+echo $PATH
+./a.out 
+./a.out 
+(describe-function 'iedit-mode)
+./a.out 
+./a.out 
+cd
+pg
+mysql
+man pg_ctl
+postgres
+cd /tmp/
+mkdir -p postgres
+cd postgres/
+ls
+pg_ctl initdb
+mkdir -p data
+pg_ctl initdb -D data
+pg_ctl -D data -l pg.log start
+ls
+cat pg.log
+ls /run
+ls /run/postgresql
+mkdir -p /run/postgresql
+sudo pg_ctl -D -l pg.log start
+su
+sudo su
+su postgres -c 'pg_ctl start -D /usr/local/pgsql/data -l serverlog'
+cd

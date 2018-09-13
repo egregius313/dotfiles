@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: unix
+# key: unix
+# --
+[*]
+end_of_line = lf
+insert_final_newline = true
+
