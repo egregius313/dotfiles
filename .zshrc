@@ -2,7 +2,20 @@
 path+=(
 	~/.local/bin/
 	~/.cargo/bin/
+	/opt/rakudo-star-2018.04/bin
+	/opt/rakudo-star-2018.04/share/perl6/site/bin
+	/usr/lib/factor
 )
+
+
+# Make cd act like pushd
+setopt autopushd
+
+# don't push the same dir twice.
+setopt pushd_ignore_dups
+
+# avoid "beep"ing
+setopt nobeep
 
 
 source ~/antigen.zsh
@@ -55,9 +68,18 @@ antigen bundle npm
 antigen bundle nvm
 antigen bundle pip
 antigen bundle python
+antigen bundle z
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 
 antigen apply
+
+function ghclone () {
+    git clone https://github.com/$1
+}
+
+function kill-emacs () {
+	pkill emacs
+}
 
 [[ -f ~/.profile ]] && source ~/.profile

@@ -1,7 +1,11 @@
+autopep8
 click
 docopt
+flake8
 isort
+jedi
+magic_wormhole
 pip
 pipenv
 ptpython
-magic_wormhole
+toml

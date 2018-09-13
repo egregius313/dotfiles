@@ -1,5 +1,7 @@
 call plug#begin("~/.vim/plugged")
 
+Plug 'cespare/vim-toml'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'powerline/powerline'
 Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdcommenter'
@@ -9,9 +11,8 @@ Plug 'vim-utils/vim-man'
 
 call plug#end()
 
+set autowrite
 set number
 set wrap
 
 colorscheme molokai
-
-
