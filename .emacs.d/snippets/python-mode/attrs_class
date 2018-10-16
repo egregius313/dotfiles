@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: attrs_class
-# key: acls
-# --
-@attr.s
-class ${1:classname}:
-    $0

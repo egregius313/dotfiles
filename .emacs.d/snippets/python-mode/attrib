@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: attrib
-# key: atr
-# --
-${1:attrib} = attr.ib($2)$0
