@@ -45,6 +45,8 @@ python-*-docs-html
 /session.*
 /srecode-map.el
 /recentf
+/request/
+/xkcd/
 
 sbcl.core-for-slime
 
