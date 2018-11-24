@@ -46,6 +46,8 @@ python-*-docs-html
 /srecode-map.el
 /recentf
 
+sbcl.core-for-slime
+
 # Private directory
 private/
 !private/README.md
