@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: auto_attribs
-# key: autocls
-# --
-@attr.s(auto_attribs=True)
-class ${1:classname}:
-$0

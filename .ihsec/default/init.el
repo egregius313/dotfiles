@@ -1,5 +1,3 @@
-;;; This fixed garbage collection, makes emacs start up faster ;;;;;;;
-
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file 'noerror)
 

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: current-global-map
+# key: cgm
+# --
+(current-global-map)
