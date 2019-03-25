@@ -1,14 +1,19 @@
 (use-package evil
-  :ensure t)
+  :straight t)
 
 
 (use-package evil-ediff
-  :ensure t)
+  :straight t)
 
 
 (use-package evil-expat
-  :ensure t)
+  :straight t)
 
 
 (use-package evil-extra-operator
-  :ensure t)
+  :straight t)
+
+
+(use-package evil-string-inflection
+  :after string-inflection
+  :straight t)

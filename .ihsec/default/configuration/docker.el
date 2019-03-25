@@ -1,15 +1,19 @@
 ;; -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'use-package))
+
+
 (use-package docker
-  :ensure t)
+  :straight t)
 
 
 (use-package docker-compose-mode
-  :ensure t)
+  :straight t)
 
 
 (use-package docker-tramp
-  :ensure t)
+  :straight t)
 
 (use-package dockerfile-mode
-  :ensure t)
+  :straight t)

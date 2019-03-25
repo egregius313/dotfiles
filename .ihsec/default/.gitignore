@@ -1,0 +1,15 @@
+*~
+.sx
+dmenu-items
+emms/history
+eshell/history
+eshell/lastdir
+games/*scores
+ido.last
+projectile-bookmarks.eld
+recentf
+sbcl.core-for-slime
+smex-items
+tramp
+xkcd/
+straight/

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: eval-when-compile
+# key: ewc
+# --
+(eval-when-compile
+  $0)

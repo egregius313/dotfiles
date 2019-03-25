@@ -1,9 +1,9 @@
 (use-package flx
-  :ensure t)
+  :straight t)
 
 
 (use-package ivy
-  :ensure t
+  :straight t
   :diminish ivy-mode
 
   :after (flx)
@@ -21,11 +21,14 @@
 
 
 (use-package counsel
-  :ensure t)
+  :straight t
+
+  :bind
+  (("C-c k" . counsel-ag)))
 
 
 (use-package swiper
-  :ensure t
+  :straight t
 
   :requires (counsel ivy)
   
@@ -37,6 +40,7 @@
 
   :bind
   (("C-s" . swiper)
+   ("C-r" . swiper)
    ("C-x C-f" . counsel-find-file)
    ("M-x" . counsel-M-x)
    ("C-c C-r" . ivy-resume)
@@ -55,12 +59,21 @@
    ("C-s" . next-line)
    ("C-r" . previous-line)
    ("M-c" . swiper-mc)
-   ("M-r" . swiper-query-replace)
-   ("M-s" . my/strict-completion)))
+   ("M-r" . swiper-query-replace)))
+
+
+(use-package ivy-explorer
+  :straight t
+  :after objed
+
+  :diminish ivy-explorer
+  
+  :config
+  (ivy-explorer-mode 1))
 
 
 (use-package anzu
-  :ensure t
+  :straight t
 
   :diminish anzu-mode
   

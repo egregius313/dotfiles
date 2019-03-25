@@ -1,13 +1,18 @@
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+(require 'diminish)
+
 (use-package company
-  :ensure t
+  :straight t
   :defer 10
 
   :diminish company-mode
 
   :config
   (progn
-	(setq company-idle-delay 0)
-	(setq company-minimum-prefix-length 3))
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 3))
 
   :bind
   (:map
@@ -24,15 +29,14 @@
 
 
 (use-package yasnippet
-  :ensure t
+  :straight t
 
   :diminish yas-minor-mode
 
   :config
-  (progn
-	(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-	(require 'company))
-
+  (require 'company)
+  (push (expand-file-name "snippets" user-emacs-directory) yas-snippet-dirs)
+  
   :bind
   (("C-c y" . company-yasnippet)
    :map
@@ -41,11 +45,12 @@
 
   :hook
   ((prog-mode . yas-minor-mode)
-   (org-mode . yas-minor-mode)))
+   (org-mode . yas-minor-mode)
+   (eshell-mode . yas-minor-mode)))
 
 
 (use-package yasnippet-snippets
-  :ensure t
+  :straight t
 
   :config
   (yas-reload-all))

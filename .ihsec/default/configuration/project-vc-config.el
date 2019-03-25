@@ -1,9 +1,9 @@
 (use-package magit
-  :ensure t)
+  :straight t)
 
 
 (use-package treemacs
-  :ensure t
+  :straight t
 
   :bind
   ("C-c t" . treemacs))

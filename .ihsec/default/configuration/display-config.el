@@ -1,55 +1,52 @@
-(use-package diminish
-  :ensure t)
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
 
-(progn
-  (menu-bar-mode 0)
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
+(use-package menu-bar
+  :custom
+  (menu-bar-mode nil))
+
+
+(use-package tool-bar
+  :custom
+  (tool-bar-mode nil))
+
+
+(use-package monokai-theme
+  :straight t
+
+  :custom
+  (custom-enabled-themes '(monokai))
   
-  (show-paren-mode 1)
-  (setq show-paren-delay 0)
-  (setq line-number-mode t)
-  (setq column-number-mode t))
+  :config
+  (add-to-list
+   'custom-safe-themes
+   '("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" default))
+  (load-theme 'monokai))
 
 
-(when window-system
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-  
-  (use-package pretty-mode
-	:ensure t
-	:config
-	(global-pretty-mode t)))
+(use-package hl-line
+  :if window-system
+  :straight t
+
+  :hook
+  (prog-mode . hl-line-mode))
 
 
-
-(setq display-time-24hr-format t)
-(setq display-time-format "%H:%M - %B %d %Y")
-(display-time-mode 1)
-
-
-(when (boundp 'display-line-numbers-mode)
-  (setq display-line-numbers-type 'relative)
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode))
+(use-package pretty-mode
+  :if window-system
+  :straight t
+  :config
+  (global-pretty-mode t))
 
 
 (use-package rainbow-delimiters
-  :ensure t
+  :straight t
 
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
 
-(use-package spaceline
-  :ensure t
-  :config
-  (require 'spaceline-config)
-  (setq spaceline-buffer-encoding-abbrev-p nil)
-  (setq spaceline-line-column-p t)
-  (setq spaceline-line-p t)
-  ;; (setq powerline-default-separator (quote arrow))
-  (setq powerline-default-separator nil)
-  (spaceline-spacemacs-theme))
-
-
-(set-frame-font "Fira Code 10")
+(set-frame-font "Fira Code 8")

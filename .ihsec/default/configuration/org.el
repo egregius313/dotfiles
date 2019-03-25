@@ -1,5 +1,38 @@
+(require 'subr-x)
+(straight-use-package 'git)
+
+(defun org-git-version ()
+  "The Git version of org-mode.
+Inserted by installing org-mode or when a release is made."
+  (require 'git)
+  (let ((git-repo (expand-file-name
+                   "straight/repos/org/" user-emacs-directory)))
+    (string-trim
+     (git-run "describe"
+              "--match=release\*"
+              "--abbrev=6"
+              "HEAD"))))
+
+(defun org-release ()
+  "The release version of org-mode.
+Inserted by installing org-mode or when a release is made."
+  (require 'git)
+  (let ((git-repo (expand-file-name
+                   "straight/repos/org/" user-emacs-directory)))
+    (string-trim
+     (string-remove-prefix
+      "release_"
+      (git-run "describe"
+               "--match=release\*"
+               "--abbrev=0"
+               "HEAD")))))
+
+(provide 'org-version)
+
+;; (straight-use-package 'org) ; or org-plus-contrib if desired
+
 (use-package org
-  :ensure t
+  :straight t
 
   :config
   (setq org-ellipsis " ")
@@ -11,7 +44,7 @@
 
 
 (use-package org-bullets
-  :ensure t
+  :straight t
 
   :hook
   (org-mode . org-bullets-mode))

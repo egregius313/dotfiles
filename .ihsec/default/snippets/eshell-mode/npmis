@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: npm install --save
+# key: npmis
+# --
+npm install --save 

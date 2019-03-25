@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: 2^AP^w
+# key: 2apw
+# --
+(2^{AP})^\omega

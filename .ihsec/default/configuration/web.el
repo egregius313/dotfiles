@@ -1,5 +1,5 @@
 (use-package emmet-mode
-  :ensure t
+  :straight t
 
   :config
   (progn
@@ -10,17 +10,17 @@
 
 
 (use-package json-mode
-  :ensure t
+  :straight t
   :mode "\\.json\\'")
 
 
 (use-package js2-mode
-  :ensure t
+  :straight t
   :mode "\\.js\\'")
 
 
 (use-package web-mode
-  :ensure t
+  :straight t
   :mode "\\.html\\'"
 
   :config
@@ -31,7 +31,7 @@
 
 
 (use-package company-web
-  :ensure t
+  :straight t
 
   :after (company)
   
@@ -43,13 +43,13 @@
 
 
 (use-package coffee-mode
-  :ensure t
+  :straight t
 
   :mode "\\.coffee'")
 
 
 (use-package tagedit
-  :ensure t
+  :straight t
 
   :bind
   (:map

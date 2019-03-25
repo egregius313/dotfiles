@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: compile-time-use-package
+# key: ewcup
+# --
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)

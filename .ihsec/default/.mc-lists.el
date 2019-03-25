@@ -5,27 +5,47 @@
       '(
 		c-electric-colon
 		c-electric-delete-forward
+		c-electric-paren
+		c-electric-semi&comma
+		c-electric-slash
+		c-electric-star
+		c-indent-line-or-region
+		comment-dwim
+		eval-last-sexp
 		indent-for-tab-command
 		lispy-braces
 		lispy-brackets
 		lispy-delete
+		lispy-hash
 		lispy-kill
 		lispy-move-beginning-of-line
 		lispy-move-end-of-line
 		lispy-parens
 		lispy-quotes
+		lispy-space
+		lispy-tick
+		lispy-yank
+		markdown-outdent-or-delete
 		org-beginning-of-line
 		org-cycle
 		org-delete-char
+		org-end-of-line
 		org-fill-paragraph
+		org-force-self-insert
 		org-kill-line
+		org-return-indent
 		org-self-insert-command
+		org-shiftleft
 		org-shiftright
+		org-yank
+		paredit-backslash
 		paredit-forward-barf-sexp
 		paredit-forward-delete
 		paredit-forward-kill-word
 		paredit-forward-slurp-sexp
 		paredit-kill
+		paredit-wrap-round
+		rectangle-number-lines
 		special-digit-argument
 		special-lh-knight/body
 		special-lispy-ace-char
@@ -102,13 +122,18 @@
 		special-swiper
 		swiper
 		swiper-mc
+		undo-tree-visualize
 		))
 
 (setq mc/cmds-to-run-once
       '(
+		c-end-of-statement
+		dired-next-line
 		iedit-switch-to-mc-mode
 		lispy-cursor-down
 		org-ctrl-c-ctrl-c
 		org-cycle-agenda-files
+		org-export-dispatch
+		paredit-open-round
 		special-lispy-other-mode
 		))

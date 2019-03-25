@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: npm install --dev
+# key: npmid
+# --
+npm install --dev 

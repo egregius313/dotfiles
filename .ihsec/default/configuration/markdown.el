@@ -1,2 +1,2 @@
 (use-package markdown-mode
-  :ensure t)
+  :straight t)

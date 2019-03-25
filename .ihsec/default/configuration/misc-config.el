@@ -2,14 +2,14 @@
 
 
 (use-package async
-  :ensure t
+  :straight t
 
   :init
   (dired-async-mode 1))
 
 
 (use-package which-key
-  :ensure t
+  :straight t
   :diminish which-key-mode
 
   :config
@@ -17,7 +17,7 @@
 
 
 (use-package treemacs
-  :ensure t
+  :straight t
 
   :bind
   (("s-t" . treemacs-select-window)
@@ -25,36 +25,44 @@
 
 
 (use-package super-save
-  :ensure t
+  :straight t
 
   :diminish super-save-mode
 
-  :config
-  (progn
-	(super-save-mode 1)
-	(setq super-save-auto-save-when-idle t)
-	(setq auto-save-default nil)))
-
-
-(use-package beacon
-  :ensure t
-
-  :diminish beacon-mode
+  :custom
+  (super-save-auto-save-when-idle t)
+  (auto-save-default nil)
   
   :config
-  (beacon-mode 1))
+  (super-save-mode 1))
+
+
+;; (use-package beacon
+;;   :when window-system
+;;   :straight t
+;;   :diminish beacon-mode  
+;;   :config
+;;   (beacon-mode 1))
 
 
 (use-package expand-region
-  :ensure t
+  :straight t
 
+  :config
+  (use-package change-inner
+	:straight t
+
+	:bind
+	(("M-i" . change-inner)
+	 ("M-o" . change-outer)))
+  
   :bind
   ("C-q" . er/expand-region))
 
 
 
 (use-package restclient
-  :ensure t)
+  :straight t)
 
 
 
