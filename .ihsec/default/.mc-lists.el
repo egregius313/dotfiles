@@ -25,6 +25,7 @@
 		lispy-space
 		lispy-tick
 		lispy-yank
+		markdown-cycle
 		markdown-outdent-or-delete
 		org-beginning-of-line
 		org-cycle
@@ -39,13 +40,16 @@
 		org-shiftright
 		org-yank
 		paredit-backslash
+		paredit-doublequote
 		paredit-forward-barf-sexp
 		paredit-forward-delete
 		paredit-forward-kill-word
 		paredit-forward-slurp-sexp
 		paredit-kill
+		paredit-semicolon
 		paredit-wrap-round
 		rectangle-number-lines
+		smex
 		special-digit-argument
 		special-lh-knight/body
 		special-lispy-ace-char
@@ -120,15 +124,19 @@
 		special-lispy-x
 		special-pop-tag-mark
 		special-swiper
+		string-inflection-kebab-case
 		swiper
 		swiper-mc
 		undo-tree-visualize
+		yas-expand
 		))
 
 (setq mc/cmds-to-run-once
       '(
 		c-end-of-statement
 		dired-next-line
+		emacsos/ctl-x-o/body
+		end-of-buffer
 		iedit-switch-to-mc-mode
 		lispy-cursor-down
 		org-ctrl-c-ctrl-c

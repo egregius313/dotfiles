@@ -1,7 +1,5 @@
 ;;; Use Stack Exchange from Emacs
 (use-package sx
-  :straight t
-
   :config
   (define-prefix-command 'egregius313/sx-map)
   

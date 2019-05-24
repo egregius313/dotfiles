@@ -4,7 +4,6 @@
 (require 'diminish)
 
 (use-package company
-  :straight t
   :defer 10
 
   :diminish company-mode
@@ -29,8 +28,6 @@
 
 
 (use-package yasnippet
-  :straight t
-
   :diminish yas-minor-mode
 
   :config
@@ -50,7 +47,5 @@
 
 
 (use-package yasnippet-snippets
-  :straight t
-
   :config
   (yas-reload-all))

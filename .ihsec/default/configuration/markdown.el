@@ -1,2 +1,1 @@
-(use-package markdown-mode
-  :straight t)
+(use-package markdown-mode)

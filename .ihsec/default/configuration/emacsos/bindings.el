@@ -23,12 +23,6 @@
  ([C-k] ?\C-k))
 
 
-(emacsos/binding-define-application
- Firefox
- ([M-b] [C-left])
- ([M-f] [C-right]))
-
-
 (defun emacsos/bindings-setup-hook ()
   "Setup the correct simulation keys"
   (let ((simulation-keys (assoc-default exwm-class-name emacsos/bindings-class-simulation-keys)))

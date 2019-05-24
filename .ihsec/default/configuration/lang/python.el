@@ -5,11 +5,11 @@
 
 
 (use-package jedi
-  :straight t
-
+  :defer t
+  
   :config
   (use-package company-jedi
-    :straight t
+    :ensure t
 
     :config
     (add-to-list 'company-backends 'company-jedi))
@@ -20,8 +20,8 @@
 
 (use-package elpy
   :after flycheck
-  :straight t
-
+  :defer t
+  
   :config
   (progn
     (elpy-enable)
@@ -33,7 +33,7 @@
 
 
 (use-package blacken
-  :straight t
+  :defer t
   
   :config
   (unless (executable-find "black")
@@ -44,14 +44,14 @@
 
 
 (use-package isortify
-  :straight t
-
+  :defer t
+  
   :hook
   (python-mode . isortify-mode))
 
 
 (use-package ein
-  :straight t)
+  :defer t)
 
 
 (add-to-list 'auto-mode-alist '("Pipfile" . toml-mode))

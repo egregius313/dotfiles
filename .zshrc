@@ -83,3 +83,6 @@ function kill-emacs () {
 }
 
 [[ -f ~/.profile ]] && source ~/.profile
+
+# Hook for desk activation
+[ -n "$DESK_ENV" ] && source "$DESK_ENV" || true

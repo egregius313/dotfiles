@@ -1,9 +1,9 @@
+;; -*- lexical-binding: t -*-
+
 (require 'cc-mode)
 
 
 (use-package modern-cpp-font-lock
-  :straight t
-
   :hook
   ((c++-mode . modern-c++-font-lock-mode)))
 

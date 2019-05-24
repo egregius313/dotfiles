@@ -1,6 +1,4 @@
 (use-package pulseaudio-control
-  :straight t
-
   :config
   
   

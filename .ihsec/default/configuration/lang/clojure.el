@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
@@ -5,8 +7,6 @@
 
 
 (use-package clojure-mode
-  :straight t
-
   :requires (paredit)
 
   :hook
@@ -14,8 +14,6 @@
 
 
 (use-package cider
-  :straight t
-
   :requires (company)
 
   :hook

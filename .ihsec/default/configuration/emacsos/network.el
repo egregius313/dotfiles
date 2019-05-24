@@ -83,14 +83,20 @@
   "Control whether overall networking is enabled or disabled."
   (interactive)
   (case enable
-	((:enable t nil) (nm/call-method "Enable" t))
-	(:disable (nm/call-method "Enable" nil))))
+	((:enable t nil)
+	 (progn (nm/call-method "Enable" t) t))
+	(:disable
+	 (progn (nm/call-method "Enable" nil)
+			nil))))
 
 
 (defun nm/check-connectivity ()
   "Re-check the network connectivity state."
   (interactive)
-  (nm/connectivity-state-describe-value (nm/call-method "CheckConnectivity")))
+  (let* ((connectivity (nm/call-method "CheckConnectivity"))
+		 (description (nm/connectivity-state-describe-value connectivity)))
+	(message "%s" description)
+	description))
 
 
 (defun nm/state ()
@@ -102,4 +108,4 @@
   (nm-settings/call-method "ListConnections"))
 
 
-
+(provide 'emacsos/network)

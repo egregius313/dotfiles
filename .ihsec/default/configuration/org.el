@@ -1,51 +1,49 @@
 (require 'subr-x)
-(straight-use-package 'git)
+;; (straight-use-package 'git)
 
-(defun org-git-version ()
-  "The Git version of org-mode.
-Inserted by installing org-mode or when a release is made."
-  (require 'git)
-  (let ((git-repo (expand-file-name
-                   "straight/repos/org/" user-emacs-directory)))
-    (string-trim
-     (git-run "describe"
-              "--match=release\*"
-              "--abbrev=6"
-              "HEAD"))))
+;; (defun org-git-version ()
+;;  "The Git version of org-mode.
+;; Inserted by installing org-mode or when a release is made."
+;;  (require 'git)
+;;  (let ((git-repo (expand-file-name
+;;                   "straight/repos/org/" user-emacs-directory)))
+;;    (string-trim
+;;     (git-run "describe"
+;;              "--match=release\*"
+;;              "--abbrev=6"
+;;              "HEAD"))))
 
-(defun org-release ()
-  "The release version of org-mode.
-Inserted by installing org-mode or when a release is made."
-  (require 'git)
-  (let ((git-repo (expand-file-name
-                   "straight/repos/org/" user-emacs-directory)))
-    (string-trim
-     (string-remove-prefix
-      "release_"
-      (git-run "describe"
-               "--match=release\*"
-               "--abbrev=0"
-               "HEAD")))))
+;; (defun org-release ()
+;;  "The release version of org-mode.
+;; Inserted by installing org-mode or when a release is made."
+;;  (require 'git)
+;;  (let ((git-repo (expand-file-name
+;;                   "straight/repos/org/" user-emacs-directory)))
+;;    (string-trim
+;;     (string-remove-prefix
+;;      "release_"
+;;      (git-run "describe"
+;;               "--match=release\*"
+;;               "--abbrev=0"
+;;               "HEAD")))))
 
-(provide 'org-version)
+;; (provide 'org-version)
 
 ;; (straight-use-package 'org) ; or org-plus-contrib if desired
 
 (use-package org
-  :straight t
-
   :config
   (setq org-ellipsis " ")
   (add-to-list 'org-structure-template-alist
-			   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+			   '("el" . "src emacs-lisp"))
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((ditaa . t))))
+   '((ditaa . t)))
+
+  (require 'org-tempo))
 
 
 (use-package org-bullets
-  :straight t
-
   :hook
   (org-mode . org-bullets-mode))
 

@@ -1,6 +1,7 @@
-(use-package avy
-  :straight t
+(eval-when-compile
+  (require 'use-package))
 
+(use-package avy
   :custom
   (avy-keys-alist `((avy-goto-line . ,(number-sequence ?a ?z))))
   
@@ -38,8 +39,6 @@
 
 
 (use-package ace-window
-  :straight t
-
   :bind
   (("s-w" . ace-window)
    :map ctl-x-map
@@ -47,8 +46,6 @@
 
 
 (use-package lispy
-  :straight t
-
   :hook
   ((emacs-lisp-mode clojure-mode lisp-mode) . lispy-mode))
 
@@ -61,14 +58,15 @@
    ("s-l" . windmove-right)))
 
 
-(eval-after-load 'hydra
-  (progn
-	(defhydra emacsos/ctl-x-o (:color red :hint nil)
-	  ("o" (other-window 1) "C-x o")
-	  ("q" nil "quit"))
-	(defun other-window-and-hydra (&optional n)
-	  (interactive "p")
-	  (other-window (or n 1))
-	  (emacsos/ctl-x-o/body))
-	(define-key ctl-x-map "o" #'other-window-and-hydra)))
+(defhydra emacsos/ctl-x-o (:pre (other-window 1) :timeout 1.0 :hint nil)
+  ("o" (other-window 1) "C-x o" :color red)
+  ("b" (call-interactively (key-binding (kbd "C-x b"))) "C-x b" :color blue)
+  ("f" (call-interactively (key-binding (kbd "C-x C-f"))) "C-x C-f" :color blue)
+  ("0" (call-interactively (key-binding (kbd "C-x 0"))) "C-x 0" :color red)
+  ("1" (call-interactively (key-binding (kbd "C-x 1"))) "C-x 1" :color red)
+  ("C-g" nil "quit"))
+
+(define-key ctl-x-map "o" #'emacsos/ctl-x-o/body)
+
+	
 

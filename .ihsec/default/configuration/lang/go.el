@@ -1,6 +1,4 @@
 (use-package go-mode
-  :straight t
-
   :hook
   (go-mode . gofmt-before-save)
 

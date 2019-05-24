@@ -1,6 +1,4 @@
 (use-package transpose-frame
-  :straight t
-
   :after hydra
   
   :config
@@ -27,3 +25,4 @@ _-_: split-window-below                                             _<up>_:    G
 	("|" (split-window-right))
 	("-" (split-window-below))
     ("q" nil "Quit")))
+

@@ -3,8 +3,6 @@
 ;;; Code:
 
 (use-package tuareg
-  :straight t
-
   :mode ("\\.ocamlinit\\'")
 
   :hook
@@ -12,8 +10,6 @@
 
 
 (use-package merlin
-  :straight t
-
   :after (:any tuareg caml)
 
   :config
@@ -21,8 +17,6 @@
 	(add-to-list 'company-backends 'merlin-company-backend)
 
 	(use-package flycheck-ocaml
-	  :straight t
-
 	  :after (flycheck)
 
 	  :config
@@ -36,8 +30,6 @@
 
 
 (use-package utop
-  :straight t
-
   :config
   (setq utop-command "opam config exec -- utop -emacs")
 

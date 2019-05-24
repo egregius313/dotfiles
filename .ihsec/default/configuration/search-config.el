@@ -1,9 +1,7 @@
-(use-package flx
-  :straight t)
+(use-package flx)
 
 
 (use-package ivy
-  :straight t
   :diminish ivy-mode
 
   :after (flx)
@@ -21,27 +19,26 @@
 
 
 (use-package counsel
-  :straight t
-
   :bind
-  (("C-c k" . counsel-ag)))
+  (("C-c k" . counsel-ag)
+   ("s-I" . counsel-imenu)))
 
 
 (use-package swiper
-  :straight t
-
   :requires (counsel ivy)
-  
+
+  :custom
+  (ivy-use-virtual-buffers t)
+  (enable-recursive-minibuffers t)
+
   :config
-  (progn
-	(ivy-mode 1)
-	(setq ivy-use-virtual-buffers t)
-	(setq enable-recursive-minibuffers t))
+  (ivy-mode 1)
 
   :bind
   (("C-s" . swiper)
    ("C-r" . swiper)
    ("C-x C-f" . counsel-find-file)
+
    ("M-x" . counsel-M-x)
    ("C-c C-r" . ivy-resume)
    ("C-c g" . counsel-git)
@@ -63,27 +60,10 @@
 
 
 (use-package ivy-explorer
-  :straight t
   :after objed
 
   :diminish ivy-explorer
   
   :config
   (ivy-explorer-mode 1))
-
-
-(use-package anzu
-  :straight t
-
-  :diminish anzu-mode
-  
-  :bind
-  (([remap query-replace] . 'anzu-query-replace)
-   ([remap query-replace-regexp] . 'anzu-query-replace-regexp))
-  
-  :config
-  (global-anzu-mode 1)
-  (setq anzu-cons-mode-line-p nil))
-
-
 

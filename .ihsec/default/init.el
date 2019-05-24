@@ -1,11 +1,16 @@
+;; -*- lexical-binding: t -*-
+
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file 'noerror)
 
+(eval-when-compile
+  (require 'cl-lib))
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-	   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	  (bootstrap-version 5))
+
+(let ((bootstrap-file (expand-file-name
+					   "straight/repos/straight.el/bootstrap.el"
+					   user-emacs-directory))
+      (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
 	(with-current-buffer
 		(url-retrieve-synchronously
@@ -15,35 +20,31 @@
 	  (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(require 'cl-lib)
-(straight-use-package 'use-package)
+(eval-when-compile
+  (straight-use-package 'use-package)
+  (setq-default use-package-enable-imenu-support t)
+  (require 'use-package))
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-;; (require 'package)
-(package-initialize)
 
-;; (unless (package-installed-p 'use-package)
-;;  (package-install 'use-package))
-
-;; (package-refresh-contents)
+(require 'straight)
+(setq straight-use-package-by-default t)
 
 
 ;; Used by use-package for the :diminish keyword to work
-(use-package diminish
-  :straight t)
+(use-package diminish)
 
 
 (use-package eldoc
+  :straight nil
   :diminish eldoc-mode)
 
 (use-package autorevert
+  :straight nil
   :diminish auto-revert-mode)
 
 
 (use-package simple
+  :straight nil
   :custom
   (line-number-mode t)
   (column-number-mode t)
@@ -51,11 +52,14 @@
 
 
 (use-package scroll-bar
+  :straight nil
   :custom
   (scroll-bar-mode nil))
 
 
 (use-package time
+  :straight nil
+  
   :custom
   (display-time-24hr-format t)
   (display-time-format "%H:%M - %B %d %Y")
@@ -63,12 +67,14 @@
 
 
 (use-package paren
+  :straight nil
   :custom
   (show-paren-delay 0)
   (show-paren-mode t))
 
 
 (use-package display-line-numbers
+  :straight nil
   :custom
   (display-line-numbers-type 'relative "Use relative line numbers")
 
@@ -76,35 +82,82 @@
   (prog-mode . display-line-numbers-mode))
 
 
-(use-package ido
-  :config
-  (ido-mode 1)
+(use-package menu-bar
+  :straight nil
+  :custom
+  (menu-bar-mode nil))
 
-  ;; Fancy M-x
-  (use-package smex
-	:straight t
-	:after ido
 
-	:bind
-	("M-x" . smex)))
+(use-package tool-bar
+  :straight nil
+  :custom
+  (tool-bar-mode nil))
+
+
+;; (use-package ido
+;;   :straight nil
+;;   :commands ido-mode
+
+;;   :config
+;;   (ido-mode 1)
+
+;;   ;; Fancy M-x
+;;   (use-package smex
+;;     :after ido
+
+;;     :bind
+;;     ("M-x" . smex)))
 
 
 (use-package key-chord
-  :straight t
-
   :custom
-  (key-chord-two-keys-delay 0.2))
+  (key-chord-two-keys-delay 0.2)
+
+  :bind
+  (([key-chord ?x ?o] . other-window)
+   ([key-chord ?x ?b] . ido-switch-buffer)
+   :map minibuffer-local-map
+   ([key-chord ?g ?g] . minibuffer-keyboard-quit)))
 
 
 (use-package use-package-chords
-  :straight t
-
   :config
   (key-chord-mode 1))
 
 
-(use-package quelpa-use-package
-  :straight t)
+(use-package quelpa-use-package)
+
+
+(use-package monokai-theme
+  :custom
+  (custom-enabled-themes '(monokai))
+
+  :config
+  (add-to-list
+   'custom-safe-themes
+   '("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" default))
+  (load-theme 'monokai))
+
+
+(use-package hl-line
+  :if window-system
+  :hook
+  (prog-mode . hl-line-mode))
+
+
+(use-package pretty-mode
+  :if window-system
+  :config
+  (global-pretty-mode t))
+
+
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
+
+(set-frame-font "Fira Code 8")
+
 
 
 (custom-set-faces
@@ -132,8 +185,6 @@
 
 
 (use-package paredit
-  :straight t
-
   :diminish paredit-mode
 
   :hook
@@ -141,13 +192,13 @@
 
 
 ;; (use-package electric-case
-;;   :straight t
+;;   :ensure t
 ;;   :hook
 ;;   ((java-mode . electric-case-java-init)))
 
 
 (use-package editorconfig
-  :straight t
+  :commands (editorconfig-mode)
 
   :diminish editorconfig-mode
 
@@ -158,21 +209,20 @@
   ((editorconfig-conf-mode . yas-minor-mode)))
 
 
-(use-package highlight-defined
-  :straight t
-
-  :config
-  (highlight-defined-mode 1))
-
 
 (use-package evil-nerd-commenter
-  :straight t
+  :defer t
+
+  :commands (evilnc-default-hotkeys)
 
   :config
   (evilnc-default-hotkeys)
 
   :chords
   ((";p" . evilnc-comment-or-uncomment-paragraphs)))
+
+
+(defvar emacsos/load-path (expand-file-name "lisp" user-emacs-directory))
 
 
 (defvar emacsos/load-configuration-list
@@ -186,6 +236,7 @@
 
 (defmacro load-configuration (conf &optional after-init)
   "Load all configurations"
+  ;;  (interactive (intern (read-string "configuration: ")))
   (let ((filename (concat user-emacs-directory
 						  "configuration/"
 						  (symbol-name conf))))
@@ -216,12 +267,10 @@
  autocomplete-config
  buffers
  dired
- display-config
  markdown
  misc-config
  navigation
  org
- project-vc-config
  ;; search-config
  web
  :applications
@@ -237,8 +286,8 @@
   (let ((condition
 		 (if (listp dependencies)
 			 `(and ,@(mapcar (lambda (dependency)
-							 `(executable-find ,dependency))
-						   dependencies))
+							   `(executable-find ,dependency))
+							 dependencies))
 		   `(executable-find ,dependencies))))
 	`(when ,condition
 	   ,@body)))
@@ -255,8 +304,11 @@
 
 
 (when (equal window-system 'x)
+										; (shell-command "rm -rf /home/egregius313/.emacs.d/elpa/exwm-*")
   (load-configuration window-manager)
-  (exwm-init))
+  (exwm-init)
+  ;; (exwm-enable)
+  )
 
 
 ;;; Only add these short cuts to editing mode
@@ -277,25 +329,41 @@
 (prefer-coding-system 'utf-8)
 
 
+(use-package docker
+  :when (executable-find "docker")
+  :config
+  (use-package docker-compose-mode)
 
-(when-system-dependency
- "docker"
- (load-configuration docker :after-init))
+  (use-package docker-tramp)
+
+  (use-package dockerfile-mode))
 
 
 (use-package projectile
-  :straight t
+  ;; :commands (projectile-mode)
 
-  :init
+  :bind
+  ("s-p" . projectile-command-map)
+
+  :config
   (projectile-mode 1))
 
 
+(use-package magit)
+
+
+(use-package treemacs
+  :bind
+  ("C-c t" . treemacs))
+
+
 (use-package dashboard
-  :straight t
+  ;;   :commands (dashboard-setup-startup-hook)
 
   :custom
   (dashboard-items '((recents . 5)
-					 (projects . 5)))
+					 (projects . 5)
+					 (bookmarks . 5)))
   (dashboard-startup-banner (concat user-emacs-directory "img/gods_lament.png"))
   (dashboard-banner-logo-title "")
 
@@ -303,14 +371,16 @@
   (dashboard-setup-startup-hook))
 
 
-(use-package restart-emacs
-  :straight t
-  :custom
-  (restart-emacs-restore-frames t))
+;; (use-package restart-emacs
+;;   :ensure t
+;;   :defer t
+
+;;   :custom
+;;   (restart-emacs-restore-frames t))
 
 
 (use-package evil
-  :straight t
+  :defer t
 
   :bind
   (("s-e" . evil-mode)
@@ -331,7 +401,7 @@
 
 
 (use-package highlight-defined
-  :straight t
+  :defer t
 
   :config
   (highlight-defined-mode 1))
@@ -344,42 +414,163 @@
 
 
 (use-package all-the-icons
-  :straight t
-
   :config
-  (use-package all-the-icons-dired
-	:straight t))
+  (use-package all-the-icons-dired))
 
 
-(use-package neotree
-  :straight t
+;; (use-package neotree
+;;   :ensure t
+;;   :defer t
 
-  :config
-  (neotree-hidden-file-toggle)
+;;   :config
+;;   (neotree-hidden-file-toggle)
 
-  :bind
-  (:map
-   neotree-mode-map
-   ("h" . 'neotree-hidden-file-toggle)
-   ("m" . neotree-rename-node)))
+;;   :bind
+;;   (:map
+;;    neotree-mode-map
+;;    ("h" . 'neotree-hidden-file-toggle)
+;;    ("m" . neotree-rename-node)))
 
 
 (use-package fancy-battery
-  :straight t
-
   :config
   (fancy-battery-mode 1))
 
 
-(use-package multiple-cursors
-  :straight t
+(use-package phi-search
+  :defer 5)
 
+(use-package selected
+  :defer 5)
+
+
+(use-package multiple-cursors
+  :after (phi-search selected)
+  :defer 5
+
+  ;; - Sometimes you end up with cursors outside of your view. You can scroll
+  ;;   the screen to center on each cursor with `C-v` and `M-v`.
+  ;;
+  ;; - If you get out of multiple-cursors-mode and yank - it will yank only
+  ;;   from the kill-ring of main cursor. To yank from the kill-rings of every
+  ;;   cursor use yank-rectangle, normally found at C-x r y.
+
+  :bind (("<C-m> ^"     . mc/edit-beginnings-of-lines)
+         ("<C-m> `"     . mc/edit-beginnings-of-lines)
+         ("<C-m> $"     . mc/edit-ends-of-lines)
+         ("<C-m> '"     . mc/edit-ends-of-lines)
+         ("<C-m> R"     . mc/reverse-regions)
+         ("<C-m> S"     . mc/sort-regions)
+         ("<C-m> W"     . mc/mark-all-words-like-this)
+         ("<C-m> Y"     . mc/mark-all-symbols-like-this)
+         ("<C-m> a"     . mc/mark-all-like-this-dwim)
+         ("<C-m> c"     . mc/mark-all-dwim)
+         ("<C-m> l"     . mc/insert-letters)
+         ("<C-m> n"     . mc/insert-numbers)
+         ("<C-m> r"     . mc/mark-all-in-region)
+         ("<C-m> s"     . set-rectangular-region-anchor)
+         ("<C-m> %"     . mc/mark-all-in-region-regexp)
+         ("<C-m> t"     . mc/mark-sgml-tag-pair)
+         ("<C-m> w"     . mc/mark-next-like-this-word)
+         ("<C-m> x"     . mc/mark-more-like-this-extended)
+         ("<C-m> y"     . mc/mark-next-like-this-symbol)
+         ("<C-m> C-x"   . reactivate-mark)
+         ("<C-m> C-SPC" . mc/mark-pop)
+         ("<C-m> ("     . mc/mark-all-symbols-like-this-in-defun)
+         ("<C-m> C-("   . mc/mark-all-words-like-this-in-defun)
+         ("<C-m> M-("   . mc/mark-all-like-this-in-defun)
+         ("<C-m> ["     . mc/vertical-align-with-space)
+         ("<C-m> {"     . mc/vertical-align)
+
+         ("S-<down-mouse-1>")
+         ("S-<mouse-1>" . mc/add-cursor-on-click))
+
+  :config
+  (require 'selected)
+  
+  :bind (:map selected-keymap
+              ("c"   . mc/edit-lines)
+              ("."   . mc/mark-next-like-this)
+              ("<"   . mc/unmark-next-like-this)
+              ("C->" . mc/skip-to-next-like-this)
+              (","   . mc/mark-previous-like-this)
+              (">"   . mc/unmark-previous-like-this)
+              ("C-<" . mc/skip-to-previous-like-this)
+              ("y"   . mc/mark-next-symbol-like-this)
+              ("Y"   . mc/mark-previous-symbol-like-this)
+              ("w"   . mc/mark-next-word-like-this)
+              ("W"   . mc/mark-previous-word-like-this))
+
+  :preface
+  (defun reactivate-mark ()
+    (interactive)
+    (activate-mark)))
+
+
+(use-package multiple-cursors
   :bind
   (("C-S-c C-S-c" . mc/edit-lines)
    ("C->" . mc/mark-next-like-this)
    ("C-<" . mc/mark-previous-like-this)
    ("C-c C-<" . mc/mark-all-like-this)))
 
+
+(use-package mc-extras
+  :after multiple-cursors
+  :bind (("<C-m> M-C-f" . mc/mark-next-sexps)
+         ("<C-m> M-C-b" . mc/mark-previous-sexps)
+         ("<C-m> <"     . mc/mark-all-above)
+         ("<C-m> >"     . mc/mark-all-below)
+         ("<C-m> C-d"   . mc/remove-current-cursor)
+         ("<C-m> C-k"   . mc/remove-cursors-at-eol)
+         ("<C-m> M-d"   . mc/remove-duplicated-cursors)
+         ("<C-m> |"     . mc/move-to-column)
+         ("<C-m> ~"     . mc/compare-chars)))
+
+
+;; (use-package mc-freeze
+;;   :after multiple-cursors
+;;   :bind ("<C-m> f" . mc/freeze-fake-cursors-dwim))
+
+
+;; (use-package mc-rect
+;;   :after multiple-cursors
+;;   :bind ("<C-m> ]" . mc/rect-rectangle-to-multiple-cursors))
+
+
+(use-package counsel
+  :bind
+  ("C-c k" . counsel-ag)
+  ("s-x" . counsel-M-x)
+  ("s-I" . counsel-imenu))
+
+
+(use-package swiper
+  :custom
+  (ivy-use-virtual-buffers t)
+  (enable-recursive-minibuffers t)
+
+  :bind
+  (("s-s" . swiper)
+   :map
+   swiper-map
+   ("C-j" . swiper-avy)
+   ("M-c" . swiper-mc)
+   ("M-r" . swiper-query-replace)))
+
+
+(use-package anzu
+  :diminish anzu-mode
+
+  :custom
+  (anzu-cons-mode-line-p nil)
+
+  :bind
+  (([remap query-replace] . 'anzu-query-replace)
+   ([remap query-replace-regexp] . 'anzu-query-replace-regexp))
+
+  :config
+  (global-anzu-mode 1))
 
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -391,59 +582,51 @@
 
 
 (use-package evil-surround
-  :straight t
+  :defer t
 
-  :bind
-  (("s-s c" . evil-surround-change)
-   ("s-s d" . evil-surround-delete)))
+  ;; :bind
+
+  ;; (("s-s c" . evil-surround-change)
+  ;;  ("s-s d" . evil-surround-delete))
+
+  )
 
 
 
 (use-package subword-mode
+  :straight nil	     
   :hook
   ((java-mode csharp-mode haskell-mode) . subword-mode))
 
 
-
-(global-set-key (kbd "s-n") 'make-frame-command)
-
-
 (when window-system
-  (define-key input-decode-map [?\C-i] "\C-i")
-  (define-key input-decode-map [?\C-m] "\C-m"))
+  (define-key input-decode-map [?\C-i] [C-i])
+  (define-key input-decode-map [?\C-m] [C-m]))
 
 
-
-(use-package imenu
-  :ensure t
-
-  :bind
-  (("s-I" . imenu)))
+;; (use-package imenu
+;;   :bind
+;;   (("s-I" . imenu)))
 
 
-(use-package ranger
-  :straight t)
+(use-package ranger)
 
 
 (use-package macrostep
-  :straight t
-
   :bind
   ("s-M" . macrostep-mode))
 
 
-(defun screen-shot ()
-  (interactive)
-  (shell-command "scrot ~/Pictures/" nil))
-
 
 (use-package hydra
-  :straight t
-
   :bind
   ([menu] . caps-hydra/body)
 
   :config
+  (load-configuration emacsos/hydras)
+
+  (require 'emacsos/screen-hydra)
+  
   (defhydra caps-hydra (:exit t :hint nil)
 	"
 Main menu
@@ -455,8 +638,10 @@ _g_: goto hydra      _t_: open terminal      _x_: M-x
 	("e" (flycheck-list-errors) "flycheck list")
 	("f" (call-interactively #'ranger) "ranger")
 	("g" (goto-hydra/body) "goto")
+	("I" (call-interactively #'set-input-method))
 	("l" (line-numbers-hydra/body) "display-line-numbers")
 	("s" (system-hydra/body) "System")
+	("S" (emacsos/screen-hydra/body) "screen")
 	("t" (ansi-term shell-file-name) "terminal")
 	("w" (windows-hydra/body) "windows")
 	("W" (whitespace-cleanup) "clean whitespace")
@@ -475,20 +660,15 @@ _g_: goto hydra      _t_: open terminal      _x_: M-x
   (defun suspend-system ()
 	(interactive)
 	(start-process "suspend" nil "systemctl" "suspend"))
-  
+
   (defhydra system-hydra (:exit t)
 	"System operations"
-	("l" (emacos/lock-screen) "Lock screen")
+	("l" (emacos/screen-lock) "Lock screen")
 	("m" (call-interactively #'man) "man")
 	("n" (network-hydra/body) "Network")
 	("s" (progn
 		   (emacsos/screen-lock)
 		   (suspend-system)) "Suspend"))
-
-  (defhydra network-hydra (:exit t)
-	("i" (ifconfig) "ifconfig")
-	("p" (call-interactively #'ping) "ping")
-	("P" (ping "8.8.8.8") "ping 8.8.8.8"))
 
   (defhydra line-numbers-hydra (:exit t)
 	"Hydra for display-line-numbers"
@@ -502,7 +682,20 @@ _g_: goto hydra      _t_: open terminal      _x_: M-x
 
 
 (use-package transpose-frame
-  :straight t)
+  :defer t)
+
+
+(defhydra emacsos/window-display-hydra (:color blue)
+  "Display changes"
+  ("1" (progn
+		 (setq exwm-randr-workspace-monitor-plist
+			   '(0 "HDMI1" 1 "eDP1" 2 "HDMI1"))
+		 (shell-command "xrandr --output HDMI1 --left-of eDP1")
+		 (exwm-randr--init)
+		 (exwm-randr-refresh)))
+  ("2" (progn
+		 (setq exwm-randr-workspace-monitor-plist nil)
+		 (exwm-randr-refresh))))
 
 
 (defhydra windows-hydra (:hint nil)
@@ -513,6 +706,7 @@ _d_: Kill window       _V_: Flip vertically    _r_: Clockwise      _<left>_: Shr
 _o_: Ace window        _H_: Flip horizontally  _R_: Anticlockwise  _<right>_: Grow horizontally   _j_: down
 _|_: Vertical split                                            _<down>_: Shrink vertically    _k_: up
 _-_: Horizontal split                                          _<up>_: Grow vertically        _l_: right
+_D_: Manage displays
 "
   ("d" (delete-window) :color blue)
   ("V" (flip-frame))
@@ -530,8 +724,55 @@ _-_: Horizontal split                                          _<up>_: Grow vert
   ("o" (call-interactively #'ace-window) :color blue)
   ("|" (split-window-right))
   ("-" (split-window-below))
-  ("q" nil))
+  ("q" nil)
+  ("D" (emacsos/window-display-hydra/body) :color blue))
 
 
-(use-package sudo-edit
-  :straight t)
+(use-package sudo-edit)
+
+(server-start)
+
+
+(use-package string-inflection
+  :bind
+  (("C-c C-u" . string-inflection-all-cycle)
+   :map python-mode-map
+   ("C-c C-u" . string-inflection-python-style-cycle)
+   :map java-mode-map
+   ("C-c C-u" . string-inflection-java-style-cycle)
+   :map ruby-mode-map
+   ("C-c C-u" . string-inflection-ruby-style-cycle)))
+
+
+(use-package window
+  :straight nil
+
+  :config
+  (with-eval-after-load 'exwm
+	(dolist (k '(s-left
+				 s-right
+				 s-XF86MonBrightnessDown
+				 s-XF86MonBrightnessUp))
+	  (cl-pushnew k exwm-input-prefix-keys)))
+  
+  :bind
+  (([s-left] . previous-buffer)
+   ([s-XF86MonBrightnessDown] . previous-buffer)
+   ([s-right] . next-buffer)
+   ([s-XF86MonBrightnessUp] . next-buffer)))
+
+
+(use-package emacsos/screen
+  :straight nil
+  :load-path emacsos/load-path
+
+  :config
+  (emacsos/screen-enable-idle-lock))
+
+(put 'narrow-to-region 'disabled nil)
+
+
+(when (and (fboundp 'doom-modeline-mode)
+		 (fboundp 'nyan-mode))
+  (doom-modeline-mode 1)
+  (nyan-mode 1))

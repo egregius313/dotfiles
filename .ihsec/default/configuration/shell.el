@@ -1,8 +1,6 @@
 ;;; Emacs Lisp implementation of the Zsh `z' plugin. Allows you to
 ;;; easily find a directory by a piece of it's name
 (use-package eshell-z
-  :straight t
-
   :config
   (require 'eshell-z)
 

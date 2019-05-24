@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+ '(anzu-cons-mode-line-p nil)
  '(auto-save-default nil)
  '(avy-keys-alist
    (quote
@@ -15,18 +16,24 @@
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-	("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4"
+	("c30633c6acc15ab088ef409e6947ae987d3579c682c120027835fc45da1e000d" "e39ff005e524c331b08d613109bff0b55fc21c64914c4a243faa70f330015389" "bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4"
 	 ("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" default)
 	 "2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" default)))
  '(dashboard-banner-logo-title "" t)
- '(dashboard-items (quote ((recents . 5) (projects . 5))) t)
+ '(dashboard-items (quote ((recents . 5) (projects . 5) (bookmarks . 5))) t)
  '(dashboard-startup-banner "~/.emacs.d/img/gods_lament.png" t)
- '(dired-details-hidden-string "")
+ '(dired-details-hidden-string "" t)
  '(dired-dwim-target t)
  '(display-line-numbers-type (quote relative))
  '(display-time-24hr-format t)
  '(display-time-format "%H:%M - %B %d %Y")
  '(display-time-mode t)
+ '(doom-modeline-buffer-file-name-style (quote buffer-name) t)
+ '(doom-modeline-major-mode-color-icon t t)
+ '(enable-recursive-minibuffers t)
+ '(exwm-randr-workspace-monitor-plist (quote (0 "HDMI1" 1 "eDP1" 2 "HDMI1")))
+ '(exwm-randr-workspace-output-plist (quote (0 "DP-1")))
+ '(exwm-workspace-number 1)
  '(fci-rule-color "#3C3D37")
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-tail-colors
@@ -39,6 +46,7 @@
 	 ("#A75B00" . 70)
 	 ("#F309DF" . 85)
 	 ("#3C3D37" . 100))))
+ '(ivy-use-virtual-buffers t)
  '(key-chord-two-keys-delay 0.2 t)
  '(line-number-mode t)
  '(magit-diff-use-overlays nil)
@@ -48,11 +56,13 @@
  '(pos-tip-background-color "#FFFACE")
  '(pos-tip-foreground-color "#272822")
  '(powerline-default-separator nil)
- '(restart-emacs-restore-frames t)
+ '(restart-emacs-restore-frames t t)
  '(scroll-bar-mode nil)
  '(show-paren-delay 0)
  '(show-paren-mode t)
  '(super-save-auto-save-when-idle t)
+ '(symon-delay 10)
+ '(symon-sparkline-type (quote plain))
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

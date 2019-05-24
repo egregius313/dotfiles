@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (eval-when-compile
   (require 'use-package))
 (require 'bind-key)
@@ -6,13 +8,19 @@
 
 
 (use-package sly
-  :straight t
+  :commands (sly sly-editing-mode)
+  
+  :custom
+  (inferior-lisp-program "/usr/bin/sbcl")
 
+  (sly-lisp-implementations
+   `((sbcl (,inferior-lisp-program
+			"--core"
+			,(expand-file-name "sbcl.core-for-slime" user-emacs-directory)))))
+  
   :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-    
-  :hook
-  (common-lisp-mode . sly-editing-mode)
-  (sly-mode . (paredit-mode rainbow-delimiters-mode)))
+  (add-hook 'common-lisp-hook 'sly-editing-mode)
+  (add-hook 'sly-mode-hook 'paredit-mode)
+  (add-hook 'sly-mode-hook 'rainbow-delimiters-mode))
 
 

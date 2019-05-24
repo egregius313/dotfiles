@@ -4,8 +4,6 @@
 
 
 (use-package csharp-mode
-  :straight t
-
   :config
   (defvar csharp-repl-executable
 	"csharp"

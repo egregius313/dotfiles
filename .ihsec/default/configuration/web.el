@@ -1,6 +1,4 @@
 (use-package emmet-mode
-  :straight t
-
   :config
   (progn
 	(setq emmet-move-cursor-between-quotes t))
@@ -10,17 +8,17 @@
 
 
 (use-package json-mode
-  :straight t
   :mode "\\.json\\'")
 
 
 (use-package js2-mode
-  :straight t
   :mode "\\.js\\'")
 
 
+(use-package nodejs-repl)
+
+
 (use-package web-mode
-  :straight t
   :mode "\\.html\\'"
 
   :config
@@ -31,8 +29,6 @@
 
 
 (use-package company-web
-  :straight t
-
   :after (company)
   
   :config
@@ -43,14 +39,10 @@
 
 
 (use-package coffee-mode
-  :straight t
-
   :mode "\\.coffee'")
 
 
 (use-package tagedit
-  :straight t
-
   :bind
   (:map
    tagedit-mode-map
