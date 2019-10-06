@@ -18,5 +18,9 @@ function dotemacs() {
 export PATH="$HOME/sucklessdownloads/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
+export TERMINAL=st
+
+[[ -f ~/.emacsaliases ]] && source ~/.emacsaliases
+
 # OPAM configuration
 . /home/egregius313/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true

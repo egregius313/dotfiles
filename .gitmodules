@@ -7,3 +7,9 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule ".ihsec/default/emacs-libvterm"]
+	path = .ihsec/default/emacs-libvterm
+	url = https://github.com/akermu/emacs-libvterm
+[submodule "proof-general"]
+	path = .ihsec/default/modules/PG
+	url = https://github.com/ProofGeneral/PG

@@ -4,19 +4,21 @@
 ####################
 
 [user]
-	name = Edward Minnix
+	name = Edward Minnix III
 	# make git prompt for email before allowing commits, this forces
 	# me to specify my email on a per-repo basis instead of globally
 	useConfigOnly = true
+	email = egregius313@gmail.com
 
 [core]
 	editor = emacs
 	excludesfile = ~/.gitignore
+	autocrlf = input
 
 # Enforce SSH
-[url "ssh://git@github.com/"]
+[url "git@github.com:"]
   insteadOf = https://github.com/
-[url "ssh://git@gitlab.com/"]
+[url "git@gitlab.com:"]
   insteadOf = https://gitlab.com/
-[url "ssh://git@bitbucket.org/"]
+[url "git@bitbucket.org:"]
   insteadOf = https://bitbucket.org/

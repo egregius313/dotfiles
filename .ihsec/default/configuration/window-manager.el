@@ -24,7 +24,7 @@
   ;; (exwm-config-ido)
 
   (exwm-input-set-key (kbd "s-r") #'exwm-reset)
-  (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
+  (exwm-input-set-key (kbd "s-d") #'exwm-workspace-delete)
   (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
 
   (dotimes (i 10)
@@ -92,12 +92,14 @@
 
 	  ;; Undo
 	  ([?\C-/] . ?\C-z)
-
 	  ([?\M-\;] . ?\C-/)
 	  ([?\s-e] . evil-mode)))
-    
-  (exwm-input-set-simulation-keys
-   emacsos/common-bindings)
+
+  (customize-set-variable 'exwm-input-simulation-keys
+						  emacsos/common-bindings)
+  
+  ;; (exwm-input-set-simulation-keys
+  ;;  emacsos/common-bindings)
 
   (dolist (k '(XF86AudioLowerVolume
 			   XF86AudioRaiseVolume
@@ -110,10 +112,13 @@
 			   XF86ScreenSaver
 			   XF68Back
 			   XF86Forward
-			   XF86LaunchBXF86LaunchB
+			   XF86LaunchA
+			   XF86LaunchB
 			   Scroll_Lock
 			   print
-			   s-SPC))
+			   s-SPC
+			   s-left
+			   s-right))
     (cl-pushnew k exwm-input-prefix-keys))
 
   (defun egregius313/caps-menu nil
@@ -131,6 +136,8 @@
      (list
       (read-string "program name: ")))
     (start-process name nil name))
+
+
 
 
   (defun egregius313/rename-exwm-window ()
@@ -154,6 +161,31 @@
   
   (exwm-randr-enable)
   ;; (exwm-xim-enable)
+
+  (defun goto-previous-application-buffer ()
+	"Goto the first previous buffer which is running an X application under EXWM."
+	(interactive)
+	(cl-loop with original-buffer = (current-buffer)
+			 while (previous-buffer)
+			 until (or (eq major-mode 'exwm-mode)
+					   (eq original-buffer (current-buffer)))))
+
+
+  (defun goto-next-application-buffer ()
+	"Goto the first next buffer which is running an X application under EXWM."
+	(interactive)
+	(cl-loop with original-buffer = (current-buffer)
+			 while (next-buffer)
+			 until (or (eq major-mode 'exwm-mode)
+					   (eq original-buffer (current-buffer)))))
+
+  
+  (push 's-XF86LaunchA exwm-input-prefix-keys)
+  (global-set-key [s-XF86LaunchA] 'goto-previous-application-buffer)
+
+  (push 's-XF86LaunchB exwm-input-prefix-keys)
+  (global-set-key [s-XF86LaunchB] 'goto-next-application-buffer)
+
   
   :bind
   (;; ("s-l" . egregius313/lock-screen)
@@ -175,7 +207,7 @@
 
 (use-package dmenu
   :bind
-  ("s-SPC" . 'dmenu))
+  ("s-SPC" . dmenu))
 
 
 (defun daedreth/launch-browser ()
@@ -210,8 +242,20 @@
 
 
 (global-set-key [s-a] #'emacsos/applications/body)
+(global-set-key (kbd "s-a") #'emacsos/applications/body)
 
 
 (use-package symon
   :hook
   (exwm-init . symon-mode))
+
+
+(defun emacsos/mouseless ()
+  "Starts an xmouseless process. Temporarily suspends Emacs'
+ability to control the keyboard."
+  (interactive)
+  (start-process "xmouseless" nil "xmouseless"))
+
+
+(when (executable-find "xmouseless")
+  (global-set-key (kbd "s-m") #'emacsos/mouseless))

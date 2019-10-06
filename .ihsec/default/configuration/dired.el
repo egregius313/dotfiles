@@ -11,13 +11,15 @@
   (dired-dwim-target t)
   
   :init
-  (require 'dired)
+
+  ;; (require 'dired)
+
   
   (defun dired-back-to-top ()
-	"Goto the beginning of the directory listing"
-	(interactive)
-	(goto-char (point-min))
-	(dired-next-line 4))
+  	"Goto the beginning of the directory listing"
+  	(interactive)
+  	(goto-char (point-min))
+  	(dired-next-line 4))
 
   (defun dired-down-to-bottom ()
 	"Goto the last listing entry"
@@ -30,12 +32,12 @@
 
   (fset 'my/dired-extra-leader-map my/dired-extra-leader-map)
   
-  (defun my/dired-extra-byte-compile ()
-	(interactive)
-	(let ((files (dired-get-marked-files)))
-	  (dolist (file files)
-		(when (file-regular-p file)
-		  (byte-compile-file file)))))
+  ;; (defun my/dired-extra-byte-compile ()
+  ;; 	(interactive)
+  ;; 	(let ((files (dired-get-marked-files)))
+  ;; 	  (dolist (file files)
+  ;; 		(when (file-regular-p file)
+  ;; 		  (byte-compile-file file)))))
 
   ;; :bind-keymap
   ;; (:map dired-mode-map
@@ -50,7 +52,12 @@
    
    :map
    my/dired-extra-leader-map
-   ("c" . my/dired-extra-byte-compile)))
+   ;; ("c" . my/dired-extra-byte-compile)
+   ("c" . dired-do-byte-compile)))
+
+
+(use-package dired-async
+  :straight nil)
 
 
 (use-package dired-details

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Proof simpl reflexive Qed
+# key: psrq
+# --
+Proof. simpl. reflexivity. Qed.

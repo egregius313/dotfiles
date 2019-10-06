@@ -1,3 +1,11 @@
+(use-package windmove
+  :bind
+  ("s-h" . windmove-left)
+  ("s-j" . windmove-down)
+  ("s-k" . windmove-up)
+  ("s-l" . windmove-right))
+
+
 (use-package transpose-frame
   :after hydra
   
