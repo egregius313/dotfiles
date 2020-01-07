@@ -1,3 +1,8 @@
+;;; -*- lexical-binding: t -*-
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+
 (use-package alchemist
   :config
   (setq alchemist-mix-command (executable-find "mix"))
@@ -9,4 +14,4 @@
    (elixir-mode . alchemist-mode)))
 
 
-
+(provide 'config-lang/elixir)

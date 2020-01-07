@@ -9,6 +9,7 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file 'noerror)
 
+
 ;;; Package management
 ;;;; straight.el setup
 ;; I use straight so I can build all my packages from source and not
@@ -16,7 +17,7 @@
 (defvar bootstrap-version)
 
 (eval-and-compile
-  (defvar bootstrap-file 
+  (defvar bootstrap-file
     (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory)
     "File to bootstrap the package manager"))
 
@@ -43,13 +44,15 @@
   (setq straight-use-package-by-default t)
   (setq-default use-package-enable-imenu-support t))
 
-;; (use-package quelpa-use-package)
-
-
+
 ;;; Startup
 (block startup
-  (setq inhibit-startup-message t)
-  (setq ring-bell-function nil))
+  (use-package emacs
+    :straight nil
+    :custom
+    ;; Technically from startup.el, but startup.el doesn't provide a feature.
+    (inhibit-startup-message t)
+    (ring-bell-function nil)))
 
 
 ;;;; Dashboard
@@ -62,24 +65,16 @@
   (dashboard-startup-banner
    (expand-file-name "img/gods_lament.png" user-emacs-directory))
   (dashboard-banner-logo-title "")
-  
+
   :config
   (dashboard-setup-startup-hook))
-
+
 ;;; Appearance
 ;;;; Themes
-(use-package monokai-theme
-  :custom
-  (custom-enabled-themes '(monokai))
 
+(use-package zerodark-theme
   :config
-  (add-to-list
-   'custom-safe-themes
-   '("2925ed246fb757da0e8784ecf03b9523bccd8b7996464e587b081037e0e98001" default))
-  (load-theme 'monokai))
-
-(use-package solarized-theme)
-(use-package zerodark-theme)
+  (load-theme 'zerodark))
 
 ;;;; Superfluous Sidebars
 ;; Unnecessary side/menu/tool bars get in the way of text. Let's fix
@@ -119,8 +114,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
+
 ;;; Modeline
 ;; Used by use-package for the :diminish keyword to work
 (use-package diminish)
@@ -157,9 +151,10 @@
 ;; Information about the system's battery
 (use-package fancy-battery
   :after doom-modeline
+  :commands (fancy-battery-mode)
   :defer t
   :hook
-  (doom-modeline))
+  (doom-modeline . fancy-battery-mode))
 
 
 ;;;; Nyan Cat
@@ -180,26 +175,18 @@
 
 
 ;;;; Font
-(set-frame-font "Fira Code 8")
+;; (set-frame-font "Fira Code 8")
 
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "configuration" user-emacs-directory))
 
-;;; Backups and synchronization
-(use-package autorevert
-  :straight nil
-  :diminish auto-revert-mode)
+(setf egregius313/user-emacs-configuration-directory (expand-file-name "configuration" user-emacs-directory))
+(add-to-list 'load-path egregius313/user-emacs-configuration-directory)
+(add-to-list 'load-path (expand-file-name "lang" egregius313/user-emacs-configuration-directory))
 
-;;;; Cleanup autosaves
-(use-package files
-  :straight nil
-  :custom
-  (backup-by-copying t "don't clobber symlinks")
-  (backup-directory-alist '(("." . "~/.saves/")) "don't litter my fs tree")
-  (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 2)
-  (version-control t "use versioned backups"))
+(require 'config-backups)
 
-
+
 ;;; Keyboard configuration
 ;;;; Chords
 (eval-and-compile
@@ -224,7 +211,16 @@
   :defer 5)
 
 (use-package selected
-  :defer 5)
+  :defer 5
+
+  :config
+  (put 'upcase-region 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+
+  :bind
+  (:map selected-keymap
+        ("u" . upcase-region)
+        ("l" . downcase-region)))
 
 
 (use-package multiple-cursors
@@ -318,6 +314,7 @@
 ;;   :bind ("<C-m> ]" . mc/rect-rectangle-to-multiple-cursors))
 
 
+
 ;;; Text editing
 (setq-default tab-width 4)
 
@@ -353,6 +350,9 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;;;; Quoted Insert
+(define-key global-map (kbd "C-S-q") #'quoted-insert)
+
 ;;;; Parentheses
 (use-package paren
   :straight nil
@@ -370,8 +370,7 @@
 
   :hook
   ((emacs-lisp-mode) . paredit-mode))
-
-
+
 ;;;; Line numbers
 (use-package display-line-numbers
   :straight nil
@@ -381,9 +380,27 @@
   :hook
   (prog-mode . display-line-numbers-mode))
 
+
+;;;; TODOs
 
+(use-package hl-todo
+  :hook
+  (prog-mode . hl-todo-mode))
+
 ;;; Navigation
+(use-package buffer-expose
+  :bind
+  ("<s-tab>" . my/buffer-expose)
+  ("s-#" . buffer-expose)
+  ("s-*" . buffer-expose-stars)
 
+  :config
+  (defun my/buffer-expose (&optional show-stars)
+    (interactive "p")
+    (if show-stars
+        (buffer-expose)
+      (buffer-expose-no-stars))))
+
 ;;; Projects
 ;;;; Projectile
 (use-package projectile
@@ -408,14 +425,17 @@
 
   :config
   (editorconfig-mode 1))
-
+
 ;;; Emacs Lisp
-
 ;;;; Macroexpansion
+(use-package page-break-lines
+  :hook
+  (emacs-lisp-mode . page-break-lines-mode))
+
+
 (use-package macrostep
   :bind
   ("s-M" . macrostep-mode))
-
 
 ;; (use-package ido
 ;;   :straight nil
@@ -427,7 +447,6 @@
 ;;     :after ido
 ;;     :bind
 ;;     ("M-x" . smex)))
-
 
 
 (use-package hl-line
@@ -447,15 +466,15 @@
 
 (defvar emacsos/load-configuration-list
   nil
-  "List of configuration files to load.")
+  "list of configuration files to load.")
 
 (add-hook 'after-init-hook (lambda ()
                              (dolist (conf emacsos/load-configuration-list)
                                (load conf))))
 
 
-(defmacro load-configuration (conf &optional after-init)
-  "Load all configurations"
+(defmacro load-configuration* (conf &optional after-init)
+  "load all configurations"
   ;;  (interactive (intern (read-string "configuration: ")))
   (let ((filename (concat user-emacs-directory
                           "configuration/"
@@ -466,12 +485,12 @@
 
 
 (defun emacsos/keyword-to-string (kw)
-  "Convert a keyword symbol to a string"
+  "convert a keyword symbol to a string"
   (substring (symbol-name kw) 1))
 
 
 (defmacro load-configurations (&rest confs)
-  "Load all configurations"
+  "load all configurations"
   (cons
    'progn
    (let ((prefix ""))
@@ -479,14 +498,13 @@
       for conf in confs
       if (keywordp conf)
       do (setq prefix (concat (emacsos/keyword-to-string conf) "/"))
-      else collect `(load-configuration ,(intern (concat prefix (symbol-name conf))))))))
+      else collect `(load-configuration* ,(intern (concat prefix (symbol-name conf))))))))
 
 
 (load-configurations
  audio
- autocomplete-config
  buffers
- dired
+;; dired
  markdown
  misc-config
  navigation
@@ -501,52 +519,40 @@
  python)
 
 
+(defun emacsos/has-dependency-p (dependency &rest dependencies)
+  (and (executable-find dependency)
+     (cl-loop for dependency in dependencies
+              always (executable-find dependency))))
+
+
 (defmacro when-system-dependency (dependencies &rest body)
-  "Execute body when all dependencies from the system are met"
+  "execute body when all dependencies from the system are met"
   (let ((condition
          (if (listp dependencies)
              `(and ,@(mapcar (lambda (dependency)
-                               `(executable-find ,dependency))
-                             dependencies))
+                             `(executable-find ,dependency))
+                           dependencies))
            `(executable-find ,dependencies))))
     `(when ,condition
        ,@body)))
 
-(when-system-dependency
- ("ocaml" "opam") (load-configuration lang/ocaml :after-init))
+
 
 ;; (when-system-dependency
-;;  "sbcl" (load-configuration "common-lisp"))
+;;  ("ocaml" "opam") (load-configuration* lang/ocaml :after-init))
 
-(when-system-dependency
- "mix"
- (load-configuration lang/elixir :after-init))
-
+;; (when-system-dependency
+;;  "sbcl" (load-configuration* "common-lisp"))
 
 
-
-
-;;; Only add these short cuts to editing mode
+;;;;; only add these short cuts to editing mode
 ;; (key-chord-define-global "xb" (key-binding (kbd "C-x b")))
 ;; (key-chord-define-global "xc" (key-binding (kbd "C-x C-c")))
 ;; (key-chord-define-global "xf" (key-binding (kbd "C-x C-f")))
 ;; (key-chord-define-global "xk" (key-binding (kbd "C-x k")))
 ;; (key-chord-define-global "xs" (key-binding (kbd "C-x C-s"))))
 
-
-(use-package docker
-  :when (executable-find "docker")
-  :defer t
-  :config
-  (use-package docker-compose-mode
-    :after docker)
-
-  (use-package docker-tramp
-    :after docker)
-
-  (use-package dockerfile-mode
-    :after docker))
-
+
 
 (block version-control
   (use-package magit
@@ -587,7 +593,7 @@
 
 (block indentation
   (defun indent-buffer ()
-    "Indent current buffer according to major mode"
+    "indent current buffer according to major mode"
     (interactive)
     (indent-region (point-min) (point-max)))
 
@@ -627,8 +633,8 @@
 (use-package counsel
   :bind
   ("C-c k" . counsel-ag)
-  ("s-x" . counsel-M-x)
-  ("s-I" . counsel-imenu))
+  ("s-x" . counsel-m-x)
+  ("s-i" . counsel-imenu))
 
 
 (use-package swiper
@@ -646,8 +652,15 @@
    ("M-r" . swiper-query-replace)))
 
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(use-package dmenu
+  :straight t
+  :defer t
+  :commands (dmenu)
+  :bind
+  ("<XF86LaunchB>" . dmenu))
+
+
 
 (use-package anzu
   :diminish anzu-mode
@@ -663,13 +676,6 @@
   (global-anzu-mode 1))
 
 
-(use-package dmenu
-  :straight t
-  :defer t
-  :bind
-  ("<XF86LaunchB>" . dmenu))
-
-
 (use-package evil-surround
   :defer t
 
@@ -677,15 +683,16 @@
 
   ;; (("s-s c" . evil-surround-change)
   ;;  ("s-s d" . evil-surround-delete))
-
   )
-
 
 
 (use-package subword-mode
   :straight nil
   :hook
   ((java-mode csharp-mode haskell-mode) . subword-mode))
+
+
+
 
 
 (when window-system
@@ -695,7 +702,7 @@
 
 ;; (use-package imenu
 ;;   :bind
-;;   (("s-I" . imenu)))
+;;   (("s-i" . imenu)))
 
 
 (use-package ranger
@@ -707,55 +714,55 @@
   ([menu] . caps-hydra/body)
 
   :config
-  (load-configuration emacsos/hydras)
+  (load-configuration* emacsos/hydras)
 
   (require 'emacsos/screen-hydra)
 
   (defhydra caps-hydra (:exit t :hint nil)
     "
-Main menu
+main menu
 -------------------------------------------------
-_e_: flycheck list   _l_: line numbers       _w_: window Management
+_e_: flycheck list   _l_: line numbers       _w_: window management
 _f_: ranger          _s_: system functions   _W_: clean whitespace
-_g_: goto hydra      _t_: open terminal      _x_: M-x
+_g_: goto hydra      _t_: open terminal      _x_: m-x
 "
     ("e" (flycheck-list-errors) "flycheck list")
     ("f" (call-interactively #'ranger) "ranger")
     ("g" (goto-hydra/body) "goto")
-    ("I" (call-interactively #'set-input-method))
+    ("i" (call-interactively #'set-input-method))
     ("l" (line-numbers-hydra/body) "display-line-numbers")
-    ("s" (system-hydra/body) "System")
-    ("S" (emacsos/screen-hydra/body) "screen")
+    ("S" (system-hydra/body) "system")
+    ("s" (emacsos/screen-hydra/body) "screen")
     ("t" (ansi-term shell-file-name) "terminal")
     ("w" (windows-hydra/body) "windows")
     ("W" (whitespace-cleanup) "clean whitespace")
     ("x" (call-interactively (key-binding (kbd "M-x"))) "M-x")
-    ("P" (list-processes))
+    ("p" (list-processes))
     ("<menu>" nil "toggle caps menu"))
 
   (defhydra goto-hydra (:color blue :exit t)
-    "Goto common things"
-    ("c" (find-file custom-file) "custom file")
-    ("C" (counsel-find-file (expand-file-name "configuration" user-emacs-directory)) "find a configuration file")
+    "goto common things"
+    ("C" (find-file custom-file) "custom file")
+    ("c" (counsel-find-file (expand-file-name "configuration" user-emacs-directory)) "find a configuration file")
     ("i" (find-file user-init-file) "init file")
     ("s" (switch-to-buffer "*scratch*"))
-    ("r" (find-file "/home/egregius313/Projects/recipes/recipes.org")))
+    ("r" (find-file "/home/egregius313/projects/recipes/recipes.org")))
 
   (defun suspend-system ()
     (interactive)
     (start-process "suspend" nil "systemctl" "suspend"))
 
   (defhydra system-hydra (:exit t)
-    "System operations"
-    ("l" (emacsos/screen-lock) "Lock screen")
+    "system operations"
+    ("l" (emacsos/screen-lock) "lock screen")
     ("m" (call-interactively #'man) "man")
-    ("n" (network-hydra/body) "Network")
+    ("n" (network-hydra/body) "network")
     ("s" (progn
            (emacsos/screen-lock)
-           (suspend-system)) "Suspend"))
+           (suspend-system)) "suspend"))
 
   (defhydra line-numbers-hydra (:exit t)
-    "Hydra for display-line-numbers"
+    "hydra for display-line-numbers"
     ("r" (progn
            (case display-line-numbers-type
              ('absolute (setq display-line-numbers-type 'relative))
@@ -770,11 +777,11 @@ _g_: goto hydra      _t_: open terminal      _x_: M-x
 
 (eval-after-load 'exwm
   (defhydra emacsos/window-display-hydra (:color blue :base-map (make-sparse-keymap))
-    "Display changes"
+    "display changes"
     ("1" (progn
            (setq exwm-randr-workspace-monitor-plist
-                 '(0 "HDMI1" 1 "eDP1" 2 "HDMI1"))
-           (shell-command "xrandr --output HDMI1 --left-of eDP1 --auto")
+                 '(0 "HDMI1" 1 "EDP1" 2 "HDMI1"))
+           (shell-command "xrandr --output HDMI1 --left-of EDP1 --auto")
            (exwm-randr--init)
            (exwm-randr-refresh)))
     ("2" (progn
@@ -785,19 +792,19 @@ _g_: goto hydra      _t_: open terminal      _x_: M-x
 (eval-after-load 'windmove
   (defhydra windows-hydra (:hint nil)
     "
-^Window Management^    ^Flip^                  ^Rotate^            ^Grow/Shrink^                  ^Movement^
+^window management^    ^flip^                  ^rotate^            ^grow/shrink^                  ^movement^
 ---------------------------------------------------------------------------------------------------------------
-_d_: Kill window       _V_: Flip vertically    _r_: Clockwise      _<left>_: Shrink horizontally  _h_: left
-_o_: Ace window        _H_: Flip horizontally  _R_: Anticlockwise  _<right>_: Grow horizontally   _j_: down
-_|_: Vertical split                                            _<down>_: Shrink vertically    _k_: up
-_-_: Horizontal split                                          _<up>_: Grow vertically        _l_: right
-_D_: Manage displays
+_d_: kill window       _v_: flip vertically    _r_: clockwise      _<left>_: shrink horizontally  _h_: left
+_o_: ace window        _h_: flip horizontally  _r_: anticlockwise  _<right>_: grow horizontally   _j_: down
+_|_: vertical split                                            _<down>_: shrink vertically    _k_: up
+_-_: horizontal split                                          _<up>_: grow vertically        _l_: right
+_D_: manage displays
 "
     ("d" (delete-window) :color blue)
-    ("V" (flip-frame))
-    ("H" (flop-frame))
+    ("v" (flip-frame))
+    ("h" (flop-frame))
     ("r" (rotate-frame-clockwise))
-    ("R" (rotate-frame-anticlockwise))
+    ("r" (rotate-frame-anticlockwise))
     ("<left>" (call-interactively #'shrink-window-horizontally))
     ("<right>" (call-interactively #'enlarge-window-horizontally))
     ("<down>" (call-interactively #'shrink-window))
@@ -837,8 +844,8 @@ _D_: Manage displays
    ([s-XF86MonBrightnessUp] . next-buffer)))
 
 
-;;; EmacsOS
-;; Emacs is a great operating system
+;;; emacsos
+;; emacs is a great operating system
 
 (use-package emacsos/screen
   :after exwm
@@ -850,7 +857,7 @@ _D_: Manage displays
 
 
 
-
+
 ;;; init.el-specific configuration
 (block dotemacs
   (use-package outshine
@@ -868,33 +875,18 @@ _D_: Manage displays
         (find-file user-init-file)
         (goto-char 1)
         (bookmark-set ".")))))
+
 
-
-;;; Bookmarks
+;;; bookmarks
 
 (use-package bookmark
   :straight nil)
 
-(use-package bookmark+
-  :after bookmark
-  :straight t)
+;; (use-package bookmark-plus
+;;   :after bookmark
+;;   :straight t)
 
-
-;;; elfeed
-
-(use-package elfeed)
-(use-package elfeed-org
-  :after (org elfeed)
-
-  :custom
-  (egregius313/feeds-directory (expand-file-name "~/Projects/feeds/"))
-  (rmh-elfeed-org-files (directory-files egregius313/feeds-directory t ".org$"))
-
-  :config
-  (elfeed-org))
-
-
-;;; Misc
+;;; misc
 
 (block documentation
   (use-package eldoc
@@ -912,8 +904,6 @@ _D_: Manage displays
 (put 'narrow-to-region 'disabled nil)
 
 
-;; (eval-after-load 'exwm
-;;   (cl-pushnew 'XF86HomePage exwm-input-prefix-keys))
 (global-set-key (kbd "<XF86HomePage>")
                 (lambda ()
                   (interactive)
@@ -937,41 +927,17 @@ _D_: Manage displays
   ("M-x" . smex))
 
 
-(block ruby
-  (use-package ruby-refactor
-    :after ruby-mode
-    :straight t))
-
-
 (use-package enum
   :straight (enum :type git
                   :host gitlab
                   :repo "emacsos/enum.el"))
 
 
-(use-package md4rd
-  :straight t)
-
-
 (use-package find-func
   :straight nil
-
   :custom
-  (find-function-C-source-directory (expand-file-name "~/gitdownloads/emacs/src")))
+  (find-function-c-source-directory (expand-file-name "~/gitdownloads/emacs/src")))
 
-
-(use-package buffer-expose
-  :bind
-  ("<s-tab>" . my/buffer-expose)
-  ("s-#" . buffer-expose)
-  ("s-*" . buffer-expose-stars)
-
-  :config
-  (defun my/buffer-expose (&optional show-stars)
-    (interactive "P")
-    (if show-stars
-        (buffer-expose)
-      (buffer-expose-no-stars))))
 
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -989,12 +955,17 @@ _D_: Manage displays
 
 (use-package vterm
   :straight nil
-  :commands (vterm))
+  :commands (vterm)
+  :bind
+  ("s-v" . vterm))
+
+
+;; configuration for proof assistants, e.g. coq
 
 (add-to-list 'load-path (expand-file-name "modules/PG" user-emacs-directory))
 (use-package proof-general
   :straight nil
-  
+
   :custom
   (coq-compile-before-require t)
 
@@ -1003,7 +974,7 @@ _D_: Manage displays
             (lambda ()
               (setf prettify-symbols-alist
                     '(("nat" . 8469)
-                      ("bool" . #x1D539)
+                      ("bool" . #x1d539)
                       ("forall" . 8704)
                       ("fun" . 955)
                       ("exists" . 8707)
@@ -1011,18 +982,64 @@ _D_: Manage displays
                       ("->" . 8594))))))
 
 
-(load-configuration window-manager)
+(use-package coq-mode
+  :straight nil
+  :after proof-general
+
+  :bind
+  ("s-n" . proof-assert-next-command-interactive)
+
+  :hook
+  (coq-mode . proof-electric-terminator-enable))
+
+
+
+(load-configuration* window-manager)
 (when (and window-system (equal window-system 'x))
   ;; (shell-command "rm -rf /home/egregius313/.emacs.d/elpa/exwm-*")
-  
   (exwm-init))
 
 
 (use-package org-ref
   :straight t
-  
+
   :custom
   (reftex-default-bibliography '("~/org/bibliography/references.bib"))
   (org-ref-bibliography-notes "~/org/bibliography/notes.org")
-  (org-ref-default-bibliography '("~/rg/bibliography/references.bib"))
-  (org-ref-pdf-directory "~/rg/bibliography/bibtex-pdfs/"))
+  (org-ref-default-bibliography '("~/org/bibliography/references.bib"))
+  (org-ref-pdf-directory "~/org/bibliography/bibtex-pdfs/"))
+
+
+(defmacro load-configuration (configuration-name)
+  (let* ((name (symbol-name configuration-name))
+         (config-name (concat "config-" name))
+         (config (if (string-prefix-p "lang/" name)
+                     name
+                   config-name)))
+    `(require
+      ',(intern config-name)
+      ,(-> config
+          (expand-file-name "configuration")
+          (expand-file-name user-emacs-directory)))))
+
+(load-configuration autocomplete)
+(load-configuration lsp)
+(load-configuration spelling)
+(load-configuration docker)
+
+;; elfeed
+(load-configuration rss)
+
+(when (emacsos/has-dependency-p "ghc")
+  (load-configuration lang/haskell))
+
+(load-configuration lang/ruby)
+
+(when (emacsos/has-dependency-p "mix")
+  (load-configuration lang/elixir))
+
+(when (emacsos/has-dependency-p "ocaml" "opam")
+  (load-configuration lang/ocaml))
+
+(when (emacsos/has-dependency-p "sbcl")
+  (load-configuration lang/common-lisp))

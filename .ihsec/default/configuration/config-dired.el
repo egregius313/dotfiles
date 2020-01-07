@@ -56,6 +56,12 @@
    ("c" . dired-do-byte-compile)))
 
 
+(defun dired-find-parent-directory ()
+  (interactive)
+  (find-file (expand-file-name ".." dired-directory)))
+
+(key-chord-define dired-mode-map ".." #'dired-find-parent-directory) 
+
 (use-package dired-async
   :straight nil)
 
@@ -97,3 +103,5 @@
    dired-mode-map
    ([tab] . dired-subtree-toggle)
    ([backtab] . dired-subtree-cycle)))
+
+(provide 'config-dired)

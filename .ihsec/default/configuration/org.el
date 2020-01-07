@@ -94,3 +94,12 @@ Inserted by installing org-mode or when a release is made."
 
   :config
   (add-to-list 'org-contacts-files "~/org/brain/" t))
+
+
+(use-package ispell
+  :straight nil
+  :after company
+  :config
+  (add-to-list 'company-backends 'company-ispell)
+  :hook
+  (org-mode . company-mode))

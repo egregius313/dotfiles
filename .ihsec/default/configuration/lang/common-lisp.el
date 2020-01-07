@@ -4,8 +4,9 @@
   (require 'use-package))
 (require 'bind-key)
 
-(add-hook 'lisp-mode 'paredit-mode)
-
+(use-package paredit
+  :hook
+  (lisp-mode . paredit-mode))
 
 (use-package sly
   :commands (sly sly-editing-mode)
@@ -24,3 +25,4 @@
   (add-hook 'sly-mode-hook 'rainbow-delimiters-mode))
 
 
+(provide 'config-lang/common-lisp)

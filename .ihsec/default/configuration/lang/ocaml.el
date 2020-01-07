@@ -1,9 +1,12 @@
-;;; ocaml.el --- My OCaml Emacs config
+;;; ocaml.el --- My OCaml Emacs config -*- lexical-binding: t -*-
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
 
 ;;; Code:
 
 (use-package tuareg
-  :mode ("\\.ocamlinit\\'")
+  :mode ("\\.ocamlinit\\'" . tuareg-mode)
 
   :hook
   ((tuareg-mode . paredit-mode)))
@@ -38,4 +41,5 @@
    (utop-minor-mode . company-mode)))
 
 
+(provide 'config-lang/ocaml)
 ;;; ocaml.el ends here

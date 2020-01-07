@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: pledge
+# key: pledge
+# type: command
+# --
+
+(insert comment-start)
+(insert "I pledge my honor that I have abided by the Stevens Honor System")
+(insert comment-end)
+(newline)
+(insert comment-start)
+(insert "- Edward Minnix III")
+(insert comment-end)
+(next-line)

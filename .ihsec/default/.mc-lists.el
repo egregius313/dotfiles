@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+		anzu-query-replace
 		c-electric-colon
 		c-electric-delete-forward
 		c-electric-paren
@@ -11,8 +12,11 @@
 		c-electric-star
 		c-indent-line-or-region
 		comment-dwim
+		eldoc-eval-expression
 		eval-last-sexp
+		evilnc-comment-or-uncomment-lines
 		indent-for-tab-command
+		kill-region
 		lispy-braces
 		lispy-brackets
 		lispy-delete
@@ -28,6 +32,7 @@
 		markdown-cycle
 		markdown-outdent-or-delete
 		org-beginning-of-line
+		org-comment-dwim
 		org-cycle
 		org-delete-char
 		org-end-of-line
@@ -39,6 +44,7 @@
 		org-shiftleft
 		org-shiftright
 		org-yank
+		outshine-self-insert-command
 		paredit-backslash
 		paredit-doublequote
 		paredit-forward-barf-sexp
@@ -128,12 +134,14 @@
 		swiper
 		swiper-mc
 		undo-tree-visualize
+		unfill-toggle
 		yas-expand
 		))
 
 (setq mc/cmds-to-run-once
       '(
 		c-end-of-statement
+		coq-terminator-insert
 		dired-next-line
 		emacsos/ctl-x-o/body
 		end-of-buffer

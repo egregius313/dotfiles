@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: src_coq
+# key: <coq
+# --
+#+begin_src coq
+$0
+#+end_src

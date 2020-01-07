@@ -24,6 +24,4 @@
    ("C-z" . find-file-z)))
 
 
-
-
-
+(provide 'config-shell)
