@@ -45,6 +45,20 @@
   (setq-default use-package-enable-imenu-support t))
 
 
+(defmacro load-configuration (configuration-name)
+  (let* ((name (symbol-name configuration-name))
+         (config-name (concat "config-" name))
+         (config (if (string-prefix-p "lang/" name)
+                     name
+                   config-name)))
+    `(require
+      ',(intern config-name)
+      ,(expand-file-name config (expand-file-name "configuration" user-emacs-directory)))))
+
+
+(load-configuration display/sidebars)
+
+
 ;;; Startup
 (block startup
   (use-package emacs
@@ -80,28 +94,14 @@
 ;; Unnecessary side/menu/tool bars get in the way of text. Let's fix
 ;; that.
 
-(block superfluous-sidebars
-  (use-package scroll-bar
-    :straight nil
-    :custom
-    (scroll-bar-mode nil))
 
-  (use-package tool-bar
-    :straight nil
-    :custom
-    (tool-bar-mode nil))
-
-  (use-package menu-bar
-    :straight nil
-    :custom
-    (menu-bar-mode nil)))
 
 ;;;; Icons
 (use-package all-the-icons
   :config
   (use-package all-the-icons-dired))
 
-;;;; Misc
+;;;; Misc-
 (use-package pretty-mode
   :if window-system
   :config
@@ -389,6 +389,7 @@
 
 ;;; Navigation
 (use-package buffer-expose
+  :commands (buffer-expose buffer-expose-stars)
   :bind
   ("<s-tab>" . my/buffer-expose)
   ("s-#" . buffer-expose)
@@ -486,6 +487,7 @@
 
 (defun emacsos/keyword-to-string (kw)
   "convert a keyword symbol to a string"
+  (declare (pure t))
   (substring (symbol-name kw) 1))
 
 
@@ -504,19 +506,20 @@
 (load-configurations
  audio
  buffers
-;; dired
+ ;; dired
  markdown
  misc-config
  navigation
- org
+ ;; org
  ;; search-config
  web
  :applications
  stack-exchange
- :display
- modeline
- :lang
- python)
+ ;; :display
+ ;; modeline
+ ;; :lang
+ ;; python
+ )
 
 
 (defun emacsos/has-dependency-p (dependency &rest dependencies)
@@ -736,6 +739,7 @@ _g_: goto hydra      _t_: open terminal      _x_: m-x
     ("t" (ansi-term shell-file-name) "terminal")
     ("w" (windows-hydra/body) "windows")
     ("W" (whitespace-cleanup) "clean whitespace")
+    ("C-w" (call-interactively 'whitespace-mode) "whitespace mode")
     ("x" (call-interactively (key-binding (kbd "M-x"))) "M-x")
     ("p" (list-processes))
     ("<menu>" nil "toggle caps menu"))
@@ -999,8 +1003,10 @@ _D_: manage displays
   ;; (shell-command "rm -rf /home/egregius313/.emacs.d/elpa/exwm-*")
   (exwm-init))
 
+(load-configuration org)
 
 (use-package org-ref
+  :defer t
   :straight t
 
   :custom
@@ -1010,19 +1016,11 @@ _D_: manage displays
   (org-ref-pdf-directory "~/org/bibliography/bibtex-pdfs/"))
 
 
-(defmacro load-configuration (configuration-name)
-  (let* ((name (symbol-name configuration-name))
-         (config-name (concat "config-" name))
-         (config (if (string-prefix-p "lang/" name)
-                     name
-                   config-name)))
-    `(require
-      ',(intern config-name)
-      ,(-> config
-          (expand-file-name "configuration")
-          (expand-file-name user-emacs-directory)))))
+
 
 (load-configuration autocomplete)
+(load-configuration dired)
+(load-configuration display/modeline)
 (load-configuration lsp)
 (load-configuration spelling)
 (load-configuration docker)
@@ -1043,3 +1041,38 @@ _D_: manage displays
 
 (when (emacsos/has-dependency-p "sbcl")
   (load-configuration lang/common-lisp))
+
+(when (executable-find "pacman")
+  (load-configuration archlinux))
+
+
+(use-package xkcd
+  :defer t
+  :commands (xkcd xkcd-get)
+
+  :config
+  (org-add-link-type "xkcd" 'org-xkcd-open)
+  (add-hook 'org-store-link-functions 'org-xkcd-store-link)
+  
+  (defun org-xkcd-open (num)
+    (xkcd-get (string-to-number num)))
+
+  (defun org-xkcd-store-link ()
+    "Store a link to an xkcd comic."
+    (when (eq major-mode 'xkcd-mode)
+      (let ((num (number-to-string xkcd-cur)))
+        (org-store-link
+         :type "xkcd"
+         :link (concat "xkcd:" num)
+         :description (expand-file-name num xkcd-cache-dir)))))
+
+  :bind
+  (:map xkcd-mode-map
+        ("p" . xkcd-prev)
+        ("n" . xkcd-next)))
+
+
+(use-package x86-lookup
+  :custom
+  (x86-lookup-pdf "~/Downloads/325383-sdm-vol-2abcd.pdf")
+  (x86-lookup-browse-pdf-function 'x86-lookup-browse-pdf-browser))

@@ -20,3 +20,5 @@
   :bind
   (:map csharp-mode-map
 		("C-c C-z" . csharp-repl)))
+
+(provide 'config-lang/csharp)

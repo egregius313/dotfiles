@@ -7,6 +7,7 @@
 (add-to-list 'completion-styles 'initials t)
 
 (use-package company
+  :defer t
   :diminish company-mode
 
   :custom
@@ -69,9 +70,10 @@
 
 
 (use-package yasnippet
+  :defer t
   :diminish yas-minor-mode
 
-  :commands (yas-reload-all)
+  :commands (yas-expand yas-reload-all)
   
   :config
   (require 'company)
@@ -90,6 +92,7 @@
 
 
 (use-package yasnippet-snippets
+  :after yasnippet
   :config
   (yas-reload-all))
 

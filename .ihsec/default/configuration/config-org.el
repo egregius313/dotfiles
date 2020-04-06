@@ -1,4 +1,5 @@
 (require 'subr-x)
+
 (straight-use-package 'git)
 
 (defun org-git-version ()
@@ -37,6 +38,7 @@ Inserted by installing org-mode or when a release is made."
   :custom
   (org-ellipsis " ")
   (org-use-speed-commands t)
+  (org-pretty-entities t)
   
   :config
   (add-to-list 'org-structure-template-alist
@@ -103,3 +105,10 @@ Inserted by installing org-mode or when a release is made."
   (add-to-list 'company-backends 'company-ispell)
   :hook
   (org-mode . company-mode))
+
+(use-package org-man
+  :straight nil
+  :load-path "~/.emacs.d/lisp/")
+
+(provide 'config-org)
+;;; org-man.el ends here

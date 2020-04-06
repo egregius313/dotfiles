@@ -1,12 +1,7 @@
-;;; ocaml.el --- My OCaml Emacs config -*- lexical-binding: t -*-
-(eval-when-compile
-  (require 'use-package))
-(require 'bind-key)
-
-;;; Code:
+;;; -*- lexical-binding: t -*-
 
 (use-package tuareg
-  :mode ("\\.ocamlinit\\'" . tuareg-mode)
+  :mode ("\\.ocamlinit\\'")
 
   :hook
   ((tuareg-mode . paredit-mode)))
@@ -29,7 +24,18 @@
 
   :hook
   ((merlin-mode . company-mode)
-   ((tuareg-mode caml-mode) . merlin-mode)))
+   ((tuareg-mode caml-mode) . merlin-mode))
+
+  :bind
+  (:map merlin-mode-map
+		([remap xref-find-definitions] . merlin-locate)
+		([remap xref-pop-marker-stack] . merlin-pop-stack)))
+
+
+(use-package merlin-eldoc
+  :after (merlin)
+  :config
+  (merlin-eldoc-setup))
 
 
 (use-package utop
@@ -42,4 +48,3 @@
 
 
 (provide 'config-lang/ocaml)
-;;; ocaml.el ends here

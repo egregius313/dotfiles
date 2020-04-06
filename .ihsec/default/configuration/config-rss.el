@@ -2,7 +2,10 @@
 (eval-when-compile
   (require 'use-package))
 
-(use-package elfeed)
+(use-package elfeed
+  :defer t
+  :commands (elfeed))
+
 (use-package elfeed-org
   :after (org elfeed)
 

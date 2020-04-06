@@ -12,6 +12,7 @@
 		c-electric-star
 		c-indent-line-or-region
 		comment-dwim
+		dabbrev-expand
 		eldoc-eval-expression
 		eval-last-sexp
 		evilnc-comment-or-uncomment-lines
@@ -39,6 +40,7 @@
 		org-fill-paragraph
 		org-force-self-insert
 		org-kill-line
+		org-open-line
 		org-return-indent
 		org-self-insert-command
 		org-shiftleft
@@ -140,6 +142,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+		c-electric-pound
 		c-end-of-statement
 		coq-terminator-insert
 		dired-next-line

@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t -*-
 
+(defun dired-do-xdg-open (arg)
+  "Opens list of files with xdg-open one by one, waiting for each to finish."
+  (interactive "P")
+  (dired-do-shell-command "xdg-open" arg (dired-get-marked-files)))
+
+
 (use-package dired
   :straight nil
 
@@ -44,7 +50,9 @@
   ;;  ("," . my/dired-extra-leader-map))
   
   :bind
-  (:map
+  (([C-x C-j] . dired-jump)
+
+   :map
    dired-mode-map
    ([remap beginning-of-buffer] . dired-back-to-top)
    ([remap end-of-buffer] . dired-down-to-bottom)
@@ -53,7 +61,8 @@
    :map
    my/dired-extra-leader-map
    ;; ("c" . my/dired-extra-byte-compile)
-   ("c" . dired-do-byte-compile)))
+   ("c" . dired-do-byte-compile)
+   ("o" . dired-do-xdg-open)))
 
 
 (defun dired-find-parent-directory ()
